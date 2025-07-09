@@ -9,16 +9,22 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Icon;
-
+/**
+ *
+ * @author HP
+ */
 public class p_Menu extends javax.swing.JPanel {
 
+    
     public ArrayList<p_Menu> getSubMenu() {
         return subMenu;
     }
 
     private final ArrayList<p_Menu> subMenu = new ArrayList<>();
     private ActionListener act;
-    
+    /**
+     * Creates new form p_Menu
+     */
     public p_Menu(Icon icon, boolean sbm, Icon iconSub, String Teks, ActionListener act, p_Menu... subMenu) {
         initComponents();
         
@@ -54,10 +60,7 @@ public class p_Menu extends javax.swing.JPanel {
         iconSubMenu = new javax.swing.JLabel();
         iconMenu = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(153, 153, 255));
-        setPreferredSize(new java.awt.Dimension(228, 50));
-
-        pDasar.setBackground(new java.awt.Color(153, 153, 255));
+        pDasar.setBackground(new java.awt.Color(102, 102, 255));
         pDasar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 pDasarMouseEntered(evt);
@@ -70,43 +73,41 @@ public class p_Menu extends javax.swing.JPanel {
             }
         });
 
-        tMenu.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        tMenu.setText("Dahboard");
+        tMenu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        tMenu.setForeground(new java.awt.Color(255, 255, 255));
+        tMenu.setText("Dashboard");
 
         javax.swing.GroupLayout pDasarLayout = new javax.swing.GroupLayout(pDasar);
         pDasar.setLayout(pDasarLayout);
         pDasarLayout.setHorizontalGroup(
             pDasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pDasarLayout.createSequentialGroup()
-                .addComponent(iconMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(iconSubMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(iconMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(iconSubMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tMenu)
+                .addGap(23, 23, 23))
         );
         pDasarLayout.setVerticalGroup(
             pDasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pDasarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pDasarLayout.createSequentialGroup()
-                .addGroup(pDasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(iconSubMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(iconMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                .addGap(20, 20, 20)
+                .addComponent(tMenu)
+                .addContainerGap(24, Short.MAX_VALUE))
+            .addComponent(iconMenu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(iconSubMenu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pDasar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pDasar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pDasar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, Short.MAX_VALUE)
+            .addComponent(pDasar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
     private boolean showing = false;
@@ -122,13 +123,13 @@ public class p_Menu extends javax.swing.JPanel {
     }//GEN-LAST:event_pDasarMousePressed
 
     private void pDasarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pDasarMouseEntered
-       pDasar.setBackground(new Color(102,51,255));
+         pDasar.setBackground(new Color(153,153,255));
     }//GEN-LAST:event_pDasarMouseEntered
 
     private void pDasarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pDasarMouseExited
-        pDasar.setBackground(new Color(153,153,255));
+         pDasar.setBackground(new Color(102,102,255));
     }//GEN-LAST:event_pDasarMouseExited
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconMenu;
@@ -136,8 +137,7 @@ public class p_Menu extends javax.swing.JPanel {
     private javax.swing.JPanel pDasar;
     private javax.swing.JLabel tMenu;
     // End of variables declaration//GEN-END:variables
-
-    private void hideMenu() {
+private void hideMenu() {
         if (!showing) {
             return;  // Jika sudah disembunyikan, jangan lanjutkan
         }
