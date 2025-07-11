@@ -340,7 +340,10 @@ public class f_Utama extends javax.swing.JFrame {
     }//GEN-LAST:event_bSubMenu2ActionPerformed
 
     private void bProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bProdukActionPerformed
-        // TODO add your handling code here:
+        pContent.removeAll();
+        pContent.add(new p_stokProduk());
+        pContent.repaint();
+        pContent.revalidate();
     }//GEN-LAST:event_bProdukActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
