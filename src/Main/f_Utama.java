@@ -119,6 +119,11 @@ public class f_Utama extends javax.swing.JFrame {
         bKatUSer.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bKatUSer.setForeground(new java.awt.Color(255, 255, 255));
         bKatUSer.setText("Kategori User");
+        bKatUSer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bKatUSerActionPerformed(evt);
+            }
+        });
 
         bTransaksi.setBackground(new java.awt.Color(153, 153, 255));
         bTransaksi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -363,6 +368,14 @@ public class f_Utama extends javax.swing.JFrame {
         pContent.repaint();
         pContent.revalidate();
     }//GEN-LAST:event_bTransaksiActionPerformed
+
+    private void bKatUSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatUSerActionPerformed
+        // TODO add your handling code here:
+        pContent.removeAll();
+        pContent.add(new P_KategoriUser());
+        pContent.repaint();
+        pContent.revalidate();
+    }//GEN-LAST:event_bKatUSerActionPerformed
 
    
     /**
