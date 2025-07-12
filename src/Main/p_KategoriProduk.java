@@ -59,6 +59,8 @@ public class p_KategoriProduk extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jLabel2.setText("Nama Kategori");
 
         jButton1.setBackground(new java.awt.Color(51, 204, 0));
@@ -123,7 +125,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
