@@ -224,6 +224,9 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Kategori User"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bKatUSerActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="bTransaksi">
                       <Properties>
@@ -322,6 +325,9 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="Laporan Transaksi"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSubMenu1ActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="bSubMenu2">
                           <Properties>

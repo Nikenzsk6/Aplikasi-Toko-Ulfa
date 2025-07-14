@@ -119,6 +119,11 @@ public class f_Utama extends javax.swing.JFrame {
         bKatUSer.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bKatUSer.setForeground(new java.awt.Color(255, 255, 255));
         bKatUSer.setText("Kategori User");
+        bKatUSer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bKatUSerActionPerformed(evt);
+            }
+        });
 
         bTransaksi.setBackground(new java.awt.Color(153, 153, 255));
         bTransaksi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -156,6 +161,11 @@ public class f_Utama extends javax.swing.JFrame {
         bSubMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         bSubMenu1.setForeground(new java.awt.Color(255, 255, 255));
         bSubMenu1.setText("Laporan Transaksi");
+        bSubMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSubMenu1ActionPerformed(evt);
+            }
+        });
 
         bSubMenu2.setBackground(new java.awt.Color(153, 153, 255));
         bSubMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -316,7 +326,10 @@ public class f_Utama extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bKatProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatProdukActionPerformed
-        // TODO add your handling code here:
+        pContent.removeAll();
+        pContent.add(new p_KategoriProduk());
+        pContent.repaint();
+        pContent.revalidate();
     }//GEN-LAST:event_bKatProdukActionPerformed
 
     private void bLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLaporanActionPerformed
@@ -360,6 +373,33 @@ public class f_Utama extends javax.swing.JFrame {
         pContent.repaint();
         pContent.revalidate();
     }//GEN-LAST:event_bTransaksiActionPerformed
+
+<<<<<<< HEAD
+
+    private void bSubMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSubMenu1ActionPerformed
+       pContent.removeAll();
+        pContent.add(new p_LaporanTransaksi());
+        pContent.repaint();
+        pContent.revalidate();
+    }//GEN-LAST:event_bSubMenu1ActionPerformed
+
+    private void bKatUSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatUSerActionPerformed
+        // TODO add your handling code here:
+        pContent.removeAll();
+        pContent.add(new p_kategoriuser());
+        pContent.repaint();
+        pContent.revalidate();
+    }//GEN-LAST:event_bKatUSerActionPerformed
+
+=======
+    private void bKatUSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatUSerActionPerformed
+        // TODO add your handling code here:
+        pContent.removeAll();
+        pContent.add(new P_KategoriUser());
+        pContent.repaint();
+        pContent.revalidate();
+    }//GEN-LAST:event_bKatUSerActionPerformed
+>>>>>>> origin/RAM
 
    
     /**
