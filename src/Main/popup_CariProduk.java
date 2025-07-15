@@ -53,7 +53,7 @@ public class popup_CariProduk extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "No", "Produk", "Kategori", "Stok", "Harga"
+                "No", "Nama Produk", "Kategori", "Stok", "Harga"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
