@@ -19,7 +19,7 @@ public class f_Utama extends javax.swing.JFrame {
     public f_Utama() {
         initComponents();
         pDropDown.setVisible(false);
-       // bDashboard.setIcon(resizeIcon("Icon/dashboard_2.png", 24, 24));
+        bDashboard.setIcon(resizeIcon("Icon/dashboard_2.png", 24, 24));
     }
     
     public ImageIcon resizeIcon(String path, int width, int height) {
@@ -369,7 +369,7 @@ public class f_Utama extends javax.swing.JFrame {
     private void bKatUSerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatUSerActionPerformed
         // TODO add your handling code here:
         pContent.removeAll();
-        pContent.add(new P_KategoriUser());
+        pContent.add(new p_kategoriuser());
         pContent.repaint();
         pContent.revalidate();
     }//GEN-LAST:event_bKatUSerActionPerformed
