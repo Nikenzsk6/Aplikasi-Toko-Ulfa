@@ -80,6 +80,9 @@ Nganjuk-Jawa Timur.]]></text>
 	</pageHeader>
 	<columnHeader>
 		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="25" backcolor="#9999FF" uuid="834d79f1-c1fd-40e6-8933-5bd1bed0cc12"/>
+			</frame>
 			<staticText>
 				<reportElement x="0" y="0" width="61" height="25" uuid="4486f546-4cf5-49aa-ad99-0b6c7d4dc2d0"/>
 				<box>
@@ -90,7 +93,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ID Transaksi]]></text>
 			</staticText>
@@ -104,7 +107,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Pelanggan]]></text>
 			</staticText>
@@ -118,7 +121,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tanggal]]></text>
 			</staticText>
@@ -132,7 +135,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Produk]]></text>
 			</staticText>
@@ -146,7 +149,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Jumlah Beli]]></text>
 			</staticText>
@@ -160,7 +163,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
@@ -174,7 +177,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Bayar]]></text>
 			</staticText>
@@ -188,7 +191,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kembalian]]></text>
 			</staticText>
@@ -202,7 +205,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nama Kasir]]></text>
 			</staticText>
@@ -238,7 +241,7 @@ Nganjuk-Jawa Timur.]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_pelanggan}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="128" y="0" width="61" height="25" uuid="4a8616d7-5987-4f6b-9513-d46019751f64"/>
 				<box>
 					<pen lineWidth="0.5"/>

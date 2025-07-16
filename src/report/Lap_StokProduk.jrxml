@@ -12,8 +12,7 @@
 FROM 
     produk p
 JOIN 
-    kategori k ON p.id_kategori = k.id_kategori;
-]]>
+    kategori k ON p.id_kategori = k.id_kategori;]]>
 	</queryString>
 	<field name="nama_produk" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -59,6 +58,9 @@ Nganjuk-Jawa Timur.]]></text>
 	</pageHeader>
 	<columnHeader>
 		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="27" y="0" width="503" height="25" backcolor="#9999FF" uuid="3fc11112-f983-4659-bffc-6f9124acde26"/>
+			</frame>
 			<staticText>
 				<reportElement x="27" y="0" width="29" height="25" uuid="f5a54186-d95f-4719-ba09-27261254c71b"/>
 				<box>
@@ -69,7 +71,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[No.]]></text>
 			</staticText>
@@ -83,7 +85,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Nama Produk]]></text>
 			</staticText>
@@ -97,7 +99,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Stok]]></text>
 			</staticText>
@@ -111,7 +113,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Harga Satuan]]></text>
 			</staticText>
@@ -125,7 +127,7 @@ Nganjuk-Jawa Timur.]]></text>
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="15"/>
+					<font size="13"/>
 				</textElement>
 				<text><![CDATA[Kategori]]></text>
 			</staticText>
@@ -142,7 +144,9 @@ Nganjuk-Jawa Timur.]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_produk}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -154,7 +158,9 @@ Nganjuk-Jawa Timur.]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{stok}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -166,7 +172,9 @@ Nganjuk-Jawa Timur.]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{harga}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -178,7 +186,9 @@ Nganjuk-Jawa Timur.]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -190,7 +200,9 @@ Nganjuk-Jawa Timur.]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="13"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_kategori}]]></textFieldExpression>
 			</textField>
 		</band>
