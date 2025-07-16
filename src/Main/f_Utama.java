@@ -19,14 +19,9 @@ public class f_Utama extends javax.swing.JFrame {
     public f_Utama() {
         initComponents();
         pDropDown.setVisible(false);
-       // bDashboard.setIcon(resizeIcon("Icon/Home.png", 24, 24));
+
     }
     
-   /* public ImageIcon resizeIcon(String path, int width, int height) {
-    ImageIcon icon = new ImageIcon(getClass().getResource(path));
-    Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-    return new ImageIcon(image);
-    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -175,6 +170,11 @@ public class f_Utama extends javax.swing.JFrame {
         bSubMenu1.setForeground(new java.awt.Color(255, 255, 255));
         bSubMenu1.setText("Laporan Transaksi");
         bSubMenu1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bSubMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSubMenu1ActionPerformed(evt);
+            }
+        });
 
         bSubMenu2.setBackground(new java.awt.Color(153, 153, 255));
         bSubMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -336,7 +336,10 @@ public class f_Utama extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bKatProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bKatProdukActionPerformed
-        // TODO add your handling code here:
+         pContent.removeAll();
+        pContent.add(new p_KategoriProduk());
+        pContent.repaint();
+        pContent.revalidate();
     }//GEN-LAST:event_bKatProdukActionPerformed
 
     private void bLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLaporanActionPerformed
@@ -360,7 +363,10 @@ public class f_Utama extends javax.swing.JFrame {
     }//GEN-LAST:event_bSubMenu2ActionPerformed
 
     private void bProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bProdukActionPerformed
-        // TODO add your handling code here:
+         pContent.removeAll();
+        pContent.add(new p_stokProduk());
+        pContent.repaint();
+        pContent.revalidate();
     }//GEN-LAST:event_bProdukActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -388,6 +394,13 @@ public class f_Utama extends javax.swing.JFrame {
         pContent.repaint();
         pContent.revalidate();
     }//GEN-LAST:event_bKatUSerActionPerformed
+
+    private void bSubMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSubMenu1ActionPerformed
+        pContent.removeAll();
+        pContent.add(new p_LapTransaksi());
+        pContent.repaint();
+        pContent.revalidate();
+    }//GEN-LAST:event_bSubMenu1ActionPerformed
 
    
     /**

@@ -34,7 +34,7 @@ public class p_LapPendapatan extends javax.swing.JPanel {
         bReset = new javax.swing.JButton();
         bCetak = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_lapPendapatan = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -44,10 +44,10 @@ public class p_LapPendapatan extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        tglAwal.setBackground(new java.awt.Color(153, 153, 255));
+        tglAwal.setBackground(new java.awt.Color(255, 255, 255));
         tglAwal.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Tanggal Awal", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
-        tglAkhir.setBackground(new java.awt.Color(153, 153, 255));
+        tglAkhir.setBackground(new java.awt.Color(255, 255, 255));
         tglAkhir.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Tanggal Akhir", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
         bReset.setBackground(new java.awt.Color(51, 153, 255));
@@ -65,7 +65,7 @@ public class p_LapPendapatan extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_lapPendapatan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -73,7 +73,7 @@ public class p_LapPendapatan extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table_lapPendapatan);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -93,7 +93,7 @@ public class p_LapPendapatan extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(365, Short.MAX_VALUE))
+                .addContainerGap(317, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,9 +121,9 @@ public class p_LapPendapatan extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +159,7 @@ public class p_LapPendapatan extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table_lapPendapatan;
     private com.toedter.calendar.JDateChooser tglAkhir;
     private com.toedter.calendar.JDateChooser tglAwal;
     // End of variables declaration//GEN-END:variables
