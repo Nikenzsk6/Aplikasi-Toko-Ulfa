@@ -90,6 +90,7 @@ public class p_Transaksi extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
         jButton1.setText("Cari Produk");
         jButton1.setToolTipText("");
 
@@ -97,7 +98,7 @@ public class p_Transaksi extends javax.swing.JPanel {
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setText("Tambah");
 
-        jButton4.setBackground(new java.awt.Color(255, 102, 102));
+        jButton4.setBackground(new java.awt.Color(255, 102, 0));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton4.setText("Ubah");
 

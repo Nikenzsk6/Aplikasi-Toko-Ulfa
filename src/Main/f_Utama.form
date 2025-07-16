@@ -170,6 +170,9 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/Home2.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Dashboard"/>
                         <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
@@ -188,7 +191,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/Add Shopping Cart.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Kategori Produk"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bKatProdukActionPerformed"/>
@@ -205,7 +212,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Produk"/>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/produk.png"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Stok Produk"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bProdukActionPerformed"/>
@@ -222,7 +233,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/User.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Kategori User"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bKatUSerActionPerformed"/>
@@ -239,7 +254,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/E-commerce.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Transaksi"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bTransaksiActionPerformed"/>
@@ -256,7 +275,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/Analyze.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Laporan"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bLaporanActionPerformed"/>
@@ -273,7 +296,11 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/Icon/Logout Rounded.png"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="Logout"/>
+                        <Property name="horizontalAlignment" type="int" value="2"/>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bLogoutActionPerformed"/>
@@ -293,7 +320,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="bSubMenu1" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="bSubMenu2" alignment="0" pref="148" max="32767" attributes="0"/>
+                                      <Component id="bSubMenu2" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
@@ -324,6 +351,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="Laporan Transaksi"/>
+                            <Property name="horizontalAlignment" type="int" value="2"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JButton" name="bSubMenu2">
@@ -338,6 +366,7 @@
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="Laporan Pendapatan"/>
+                            <Property name="horizontalAlignment" type="int" value="2"/>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSubMenu2ActionPerformed"/>

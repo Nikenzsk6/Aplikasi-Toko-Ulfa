@@ -19,14 +19,14 @@ public class f_Utama extends javax.swing.JFrame {
     public f_Utama() {
         initComponents();
         pDropDown.setVisible(false);
-        bDashboard.setIcon(resizeIcon("Icon/dashboard_2.png", 24, 24));
+       // bDashboard.setIcon(resizeIcon("Icon/Home.png", 24, 24));
     }
     
-    public ImageIcon resizeIcon(String path, int width, int height) {
+   /* public ImageIcon resizeIcon(String path, int width, int height) {
     ImageIcon icon = new ImageIcon(getClass().getResource(path));
     Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     return new ImageIcon(image);
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -87,6 +87,7 @@ public class f_Utama extends javax.swing.JFrame {
         bDashboard.setBackground(new java.awt.Color(153, 153, 255));
         bDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        bDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Home2.png"))); // NOI18N
         bDashboard.setText("Dashboard");
         bDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bDashboard.addActionListener(new java.awt.event.ActionListener() {
@@ -98,7 +99,9 @@ public class f_Utama extends javax.swing.JFrame {
         bKatProduk.setBackground(new java.awt.Color(153, 153, 255));
         bKatProduk.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bKatProduk.setForeground(new java.awt.Color(255, 255, 255));
+        bKatProduk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Add Shopping Cart.png"))); // NOI18N
         bKatProduk.setText("Kategori Produk");
+        bKatProduk.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bKatProduk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bKatProdukActionPerformed(evt);
@@ -108,7 +111,9 @@ public class f_Utama extends javax.swing.JFrame {
         bProduk.setBackground(new java.awt.Color(153, 153, 255));
         bProduk.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bProduk.setForeground(new java.awt.Color(255, 255, 255));
-        bProduk.setText("Produk");
+        bProduk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/produk.png"))); // NOI18N
+        bProduk.setText("Stok Produk");
+        bProduk.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bProduk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bProdukActionPerformed(evt);
@@ -118,7 +123,9 @@ public class f_Utama extends javax.swing.JFrame {
         bKatUSer.setBackground(new java.awt.Color(153, 153, 255));
         bKatUSer.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bKatUSer.setForeground(new java.awt.Color(255, 255, 255));
+        bKatUSer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/User.png"))); // NOI18N
         bKatUSer.setText("Kategori User");
+        bKatUSer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bKatUSer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bKatUSerActionPerformed(evt);
@@ -128,7 +135,9 @@ public class f_Utama extends javax.swing.JFrame {
         bTransaksi.setBackground(new java.awt.Color(153, 153, 255));
         bTransaksi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bTransaksi.setForeground(new java.awt.Color(255, 255, 255));
+        bTransaksi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/E-commerce.png"))); // NOI18N
         bTransaksi.setText("Transaksi");
+        bTransaksi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bTransaksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bTransaksiActionPerformed(evt);
@@ -138,7 +147,9 @@ public class f_Utama extends javax.swing.JFrame {
         bLaporan.setBackground(new java.awt.Color(153, 153, 255));
         bLaporan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bLaporan.setForeground(new java.awt.Color(255, 255, 255));
+        bLaporan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Analyze.png"))); // NOI18N
         bLaporan.setText("Laporan");
+        bLaporan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bLaporan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bLaporanActionPerformed(evt);
@@ -148,7 +159,9 @@ public class f_Utama extends javax.swing.JFrame {
         bLogout.setBackground(new java.awt.Color(153, 153, 255));
         bLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         bLogout.setForeground(new java.awt.Color(255, 255, 255));
+        bLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Logout Rounded.png"))); // NOI18N
         bLogout.setText("Logout");
+        bLogout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bLogoutActionPerformed(evt);
@@ -161,11 +174,13 @@ public class f_Utama extends javax.swing.JFrame {
         bSubMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         bSubMenu1.setForeground(new java.awt.Color(255, 255, 255));
         bSubMenu1.setText("Laporan Transaksi");
+        bSubMenu1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         bSubMenu2.setBackground(new java.awt.Color(153, 153, 255));
         bSubMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         bSubMenu2.setForeground(new java.awt.Color(255, 255, 255));
         bSubMenu2.setText("Laporan Pendapatan");
+        bSubMenu2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bSubMenu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bSubMenu2ActionPerformed(evt);
@@ -180,7 +195,7 @@ public class f_Utama extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pDropDownLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(bSubMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bSubMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+                    .addComponent(bSubMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pDropDownLayout.setVerticalGroup(
