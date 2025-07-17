@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Main;
+import Main.koneksiDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -21,40 +22,115 @@ public class p_Transaksi extends javax.swing.JPanel {
      * Creates new form Transaksi
      */
     void Struk(int idTransaksi){
-        try {
+        
+            try {
             Connection con = koneksiDB.konek();
-            String sql = "SELECT t.id_transaksi, u.nama_user AS nama_kasir, t.nama_pelanggan, t.tgl, " +
-             "p.nama_produk, dt.jumlah_beli, p.harga, dt.subtotal, t.total_bayar, t.tunai, t.kembalian " +
-             "FROM transaksi t " +
-             "JOIN user u ON t.id_user = u.id_user " +
-             "JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi " +
-             "JOIN produk p ON dt.id_produk = p.id_produk " +
-             "WHERE t.id_transaksi = ?";
+            String sql = "SELECT t.id_transaksi, u.nama_user AS nama_kasir, t.nama_pelanggan, t.tgl, "
+                    + "p.nama_produk, dt.jumlah_beli, p.harga, dt.subtotal, t.total_bayar, t.tunai, t.kembalian "
+                    + "FROM transaksi t "
+                    + "JOIN user u ON t.id_user = u.id_user "
+                    + "JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi "
+                    + "JOIN produk p ON dt.id_produk = p.id_produk "
+                    + "WHERE t.id_transaksi = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, idTransaksi);
             ResultSet rs = ps.executeQuery();
             
-            if (rs.next()) {
-                String id = rs.getString("id_transaksi");
-                String nama_kasir = rs.getString("nama_user");
-                String nama_pelanggan = rs.getString("nama_pelanggan");
-                String tgl = rs.getString("tgl");
-                String nama_produk = rs.getString("nama_produk");
-                String jml = rs.getString("jumlah_beli");
-                double harga = rs.getDouble("harga");
-                double sbtotal = rs.getDouble("subtotal");
-                double totalByr = rs.getDouble("total_bayar");
-                double bayar = rs.getDouble("tunai");
-                double kembalian = rs.getDouble("kembalian");
+            String struk = "\n";
+            int no = 1;
+            boolean pertama = true;
+            
+            while (rs.next()) {
+                if (pertama) {
+                    String id = rs.getString("id_transaksi");
+                    String nama_kasir = rs.getString("nama_user");
+                    String nama_pelanggan = rs.getString("nama_pelanggan");
+                    String tgl = rs.getString("tgl");
+                    
+                   
+                    
+                    struk += "\u001B\u0045\u0001";                    
+                    struk += "       TOKO ULFA            \n";
+                    struk += "\u001B\u0045\u0000";
+                    struk += "Id Transaksi   : " + id + "\n";
+                    struk += "Nama Kasir     : " + nama_kasir + "\n";
+                    struk += "Nama Pelanggan : " + nama_pelanggan + "\n";
+                    struk += "Tanggal        : " + tgl + "\n";
+                    struk += "------------------------------\n";
+                    struk += String.format("%-4s %-20s %-6s %-10s %-10s\n", "No.", "Nama Produk", "Jml", "Harga", "Subtotal");
+                    
+                    pertama = false; // hanya cetak header 1 kali
+                }
                 
-                String struk = "\n";
+                String nama_produk = rs.getString("nama_produk");
+                int jml = rs.getInt("jumlah_beli");
+                int harga = rs.getInt("harga");
+                int sbtotal = rs.getInt("subtotal");
+                
+                struk += String.format("%-4d %-20s %-6d Rp.%-8d Rp.%-8d\n", no++, nama_produk, jml, harga, sbtotal);
+            }
+
+// Setelah looping selesai, cetak total (gunakan variabel yang sudah disimpan dari baris pertama)
+            struk += "------------------------------\n";
+            struk += String.format("Total   : Rp. %d\n", rs.getInt("total_bayar"));
+            struk += String.format("Bayar   : Rp. %d\n", rs.getInt("tunai"));
+            struk += String.format("Kembali : Rp. %d\n", rs.getInt("kembalian"));
+            struk += "\n";
+            struk += "\"Terima kasih telah memilih toko kami,\n";
+            struk += "semoga Anda puas dengan pelayanan kami.\"\n";
+            System.out.println("Panjang karakter struk: " + struk.length());
+
+        } catch (SQLException sQLException) {
                 
             }
-        } catch (SQLException sQLException) {
-        }
+
+        
     }
+
     public p_Transaksi() {
         initComponents();
+        reset();
+        load_tabel_transaksi();
+    }
+     void reset(){
+        t_IdTransk.setText(null);
+        t_IdTransk.setEditable(true);
+        t_NamaPelanggan.setText(null);
+        t_NamaProduk.setText(null);
+        t_HargaSatuan.setText(null);
+        t_TtlBelanja.setText(null);
+        t_TtlHarga.setText(null);
+        t_Bayar.setText(null);
+        t_Kembalian.setText(null);
+    }
+     void load_tabel_transaksi(){
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn("No.");
+        model.addColumn("Nama Produk");
+        model.addColumn("Jumlah");
+        model.addColumn("Harga Satuan");
+        model.addColumn("Subtotal");
+        String sql = "SELECT * FROM transaksi";
+        
+        try {
+            Connection conn = koneksiDB.konek();
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                    String nama_produk = rs.getString("nama_produk");
+                int jml = rs.getInt("jumlah_beli");
+                int harga = rs.getInt("harga");
+                int sbtotal = rs.getInt("subtotal");
+                Object[] baris = {nama_produk, jml, harga, sbtotal};
+                model.addRow(baris);
+
+            }
+        } catch (SQLException sQLException) {
+            JOptionPane.showMessageDialog(null, "Gagal mengambil data");
+        }
+        t_transaksi.setModel(model);
     }
 
     /**
@@ -143,21 +219,41 @@ public class p_Transaksi extends javax.swing.JPanel {
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
 
         b_ubah.setBackground(new java.awt.Color(255, 102, 0));
         b_ubah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_ubah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Edit2.png"))); // NOI18N
         b_ubah.setText("Ubah");
+        b_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_ubahActionPerformed(evt);
+            }
+        });
 
         b_hapus.setBackground(new java.awt.Color(255, 51, 51));
         b_hapus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_hapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete.png"))); // NOI18N
         b_hapus.setText("Hapus");
+        b_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_hapusActionPerformed(evt);
+            }
+        });
 
         b_reset.setBackground(new java.awt.Color(0, 153, 255));
         b_reset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/reset.png"))); // NOI18N
         b_reset.setText("Reset");
+        b_reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_resetActionPerformed(evt);
+            }
+        });
 
         t_transaksi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,6 +269,11 @@ public class p_Transaksi extends javax.swing.JPanel {
         jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
         jButton7.setText("Cetak");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -331,6 +432,97 @@ public class p_Transaksi extends javax.swing.JPanel {
     private void t_KembalianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_KembalianActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_t_KembalianActionPerformed
+
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+ try {
+    // Ambil data dari form
+    String idTransk = t_IdTransk.getText();
+    String namaPel = t_NamaPelanggan.getText();
+    String totalBlnj = t_TtlBelanja.getText();
+    String bayar = t_Bayar.getText();
+    String kembalian = t_Kembalian.getText();
+
+    // Query insert
+    String sql = "INSERT INTO transaksi (id_transaksi, nama_pelanggan, total_bayar, tunai, kembalian) VALUES (?, ?, ?, ?, ?)";
+
+    // Buat koneksi dan siapkan statement
+    Connection conn = koneksiDB.konek();
+    PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+    // Masukkan nilai ke parameter
+    preparedStatement.setString(1, idTransk);
+    preparedStatement.setString(2, namaPel);
+    preparedStatement.setInt(3, Integer.parseInt(totalBlnj));
+    preparedStatement.setInt(4, Integer.parseInt(bayar));
+    preparedStatement.setInt(5, Integer.parseInt(kembalian));
+
+    // Eksekusi penyimpanan
+    preparedStatement.executeUpdate();
+    JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
+
+    // Muat ulang tabel dan reset form
+    load_tabel_transaksi(); // ganti jika nama tabelnya bukan jurusan
+    reset();
+
+} catch (SQLException sQLException) {
+    JOptionPane.showMessageDialog(null, "Data gagal disimpan!\n" + sQLException.getMessage());
+    System.out.println(sQLException);
+}
+
+    }//GEN-LAST:event_b_tambahActionPerformed
+
+    private void b_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ubahActionPerformed
+    // Ambil data dari form
+    String idTransk = t_IdTransk.getText();
+    String namaPel = t_NamaPelanggan.getText();
+    String totalBlnj = t_TtlBelanja.getText();
+    String bayar = t_Bayar.getText();
+    String kembalian = t_Kembalian.getText();  
+        String sql = "UPDATE transaksi SET nama_pelanggan=?, total_bayar=?, tunai=?, kembalian=? WHERE id_transaksi=?";
+       
+            try {
+            Connection conn = koneksiDB.konek();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, namaPel);
+            ps.setString(2, totalBlnj);
+            ps.setString(3, bayar);
+            ps.setString(4, kembalian);
+            ps.setString(5, idTransk);            
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah!");
+        } catch (SQLException sQLException) {
+          JOptionPane.showMessageDialog(null, "Data gagal diubah!");
+           System.out.println(sQLException);
+        }
+            load_tabel_transaksi();
+            reset();
+    }//GEN-LAST:event_b_ubahActionPerformed
+
+    private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
+        String idTransk = t_IdTransk.getText();
+          String sql = "DELETE FROM guru WHERE id_transaksi=?";
+       
+         try {
+            Connection conn = koneksiDB.konek();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, idTransk);
+            ps.execute();
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
+        } catch (SQLException sQLException) {
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
+             System.out.println(sQLException);
+        }
+         load_tabel_transaksi();
+         reset();
+    }//GEN-LAST:event_b_hapusActionPerformed
+
+    private void b_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_resetActionPerformed
+        reset();
+    }//GEN-LAST:event_b_resetActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        Struk(80);
+    }//GEN-LAST:event_jButton7ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
