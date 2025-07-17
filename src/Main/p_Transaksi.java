@@ -3,7 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Main;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+/**
 /**
  *
  * @author HP
@@ -13,6 +20,39 @@ public class p_Transaksi extends javax.swing.JPanel {
     /**
      * Creates new form Transaksi
      */
+    void Struk(int idTransaksi){
+        try {
+            Connection con = koneksiDB.konek();
+            String sql = "SELECT t.id_transaksi, u.nama_user AS nama_kasir, t.nama_pelanggan, t.tgl, " +
+             "p.nama_produk, dt.jumlah_beli, p.harga, dt.subtotal, t.total_bayar, t.tunai, t.kembalian " +
+             "FROM transaksi t " +
+             "JOIN user u ON t.id_user = u.id_user " +
+             "JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi " +
+             "JOIN produk p ON dt.id_produk = p.id_produk " +
+             "WHERE t.id_transaksi = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idTransaksi);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                String id = rs.getString("id_transaksi");
+                String nama_kasir = rs.getString("nama_user");
+                String nama_pelanggan = rs.getString("nama_pelanggan");
+                String tgl = rs.getString("tgl");
+                String nama_produk = rs.getString("nama_produk");
+                String jml = rs.getString("jumlah_beli");
+                double harga = rs.getDouble("harga");
+                double sbtotal = rs.getDouble("subtotal");
+                double totalByr = rs.getDouble("total_bayar");
+                double bayar = rs.getDouble("tunai");
+                double kembalian = rs.getDouble("kembalian");
+                
+                String struk = "\n";
+                
+            }
+        } catch (SQLException sQLException) {
+        }
+    }
     public p_Transaksi() {
         initComponents();
     }

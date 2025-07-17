@@ -3,7 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Main;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author HP
@@ -15,7 +21,48 @@ public class p_KategoriProduk extends javax.swing.JPanel {
      */
     public p_KategoriProduk() {
         initComponents();
+        reset();
+        load_table_Kategori();
     }
+    
+     //method reset
+    void reset(){
+       t_namaKategori.setText(null);
+    }
+    
+    //method load tabel guru
+   void load_table_Kategori(){
+       DefaultTableModel model = new DefaultTableModel();
+       
+       //menambahkan kolom ke dlm tabel
+       model.addColumn("No.");
+       model.addColumn("ID Kategori");
+       model.addColumn("Nama Kategori");
+       
+       //Query SL utk mengambil semua data dari tabel
+       String sql = "SELECT * FROM kategori";
+       
+       try {
+           Connection con = koneksiDB.konek();
+           Statement st = con.createStatement();
+           ResultSet rs = st.executeQuery(sql);
+           
+           while (rs.next()) {
+               //ambil data kolom id dan nama kategori
+               String id_kategori = rs.getString("id_kategori");
+               String nama_kategori = rs.getString("nama_kategori");
+               //membuat array berisi data satu baris
+               Object[] baris = {id_kategori, nama_kategori, };
+               //menambahkan array ke dlm tabel
+               model.addRow(baris);
+           }
+       } catch (SQLException sQLException) {
+           //menampilkan pesan error
+           JOptionPane.showMessageDialog(null, "Gagal mengambil data!");
+           System.out.println(sQLException);
+       }
+       table_katProduk.setModel(model);
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,7 +77,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         p_main = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        t_namaProduk = new javax.swing.JTextField();
+        t_namaKategori = new javax.swing.JTextField();
         b_tambah = new javax.swing.JButton();
         b_ubah = new javax.swing.JButton();
         b_hapus = new javax.swing.JButton();
@@ -51,12 +98,17 @@ public class p_KategoriProduk extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Nama Kategori : ");
 
-        t_namaProduk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        t_namaKategori.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         b_tambah.setBackground(new java.awt.Color(51, 204, 0));
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
 
         b_ubah.setBackground(new java.awt.Color(255, 102, 0));
         b_ubah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -107,7 +159,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, p_mainLayout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(t_namaProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(t_namaKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 409, Short.MAX_VALUE))))
         );
@@ -117,7 +169,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
                 .addGap(44, 44, 44)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(t_namaProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_namaKategori, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_tambah)
@@ -164,6 +216,10 @@ public class p_KategoriProduk extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_b_tambahActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton b_hapus;
@@ -175,7 +231,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel p_main;
-    private javax.swing.JTextField t_namaProduk;
+    private javax.swing.JTextField t_namaKategori;
     private javax.swing.JTable table_katProduk;
     // End of variables declaration//GEN-END:variables
 }
