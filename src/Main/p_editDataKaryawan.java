@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Main;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 /**
  *
  * @author HP
@@ -15,7 +20,38 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
      */
     public p_editDataKaryawan() {
         initComponents();
+     
     }
+    
+    public void tampildata(String id, String nama,  String alamat,
+    String noHP, String role, String pw){
+     t_idUser.setText(id);
+     t_namaUser.setText(nama);
+     t_alamat.setText(alamat);
+     t_noHP.setText(noHP);
+     c_role.setSelectedItem(role);
+     t_pw.setText(pw);
+    }
+    
+    public void ubahUser(){
+        b_tambah.setVisible(false);
+    }
+    public void tambahUser(){
+        b_ubah.setVisible(false);
+        b_hapus.setVisible(false);
+    }
+   
+    void reset(){
+        t_idUser.setText(null);
+        t_namaUser.setText(null);
+        t_alamat.setText(null);
+        t_noHP.setText(null);
+        c_role.setSelectedItem(null);
+        t_pw.setText(null);
+        //aktifkan pengeditan id_user
+        t_idUser.setEditable(true);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +81,7 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
         b_ubah = new javax.swing.JButton();
         b_hapus = new javax.swing.JButton();
         b_reset = new javax.swing.JButton();
+        b_batal = new javax.swing.JButton();
 
         p_dasar.setBackground(new java.awt.Color(255, 255, 255));
         p_dasar.setPreferredSize(new java.awt.Dimension(1070, 633));
@@ -96,21 +133,51 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
 
         b_ubah.setBackground(new java.awt.Color(255, 102, 0));
         b_ubah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_ubah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Edit2.png"))); // NOI18N
         b_ubah.setText("Ubah");
+        b_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_ubahActionPerformed(evt);
+            }
+        });
 
         b_hapus.setBackground(new java.awt.Color(255, 51, 51));
         b_hapus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_hapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete.png"))); // NOI18N
         b_hapus.setText("Hapus");
+        b_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_hapusActionPerformed(evt);
+            }
+        });
 
         b_reset.setBackground(new java.awt.Color(0, 153, 255));
         b_reset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/reset.png"))); // NOI18N
         b_reset.setText("Reset");
+        b_reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_resetActionPerformed(evt);
+            }
+        });
+
+        b_batal.setBackground(new java.awt.Color(153, 153, 153));
+        b_batal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        b_batal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Cancel.png"))); // NOI18N
+        b_batal.setText("Batal");
+        b_batal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_batalActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -148,7 +215,7 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
                                     .addComponent(t_idUser)
                                     .addComponent(t_namaUser, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(283, Short.MAX_VALUE)
                 .addComponent(b_tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -157,7 +224,9 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
                 .addComponent(b_hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(b_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(248, 248, 248))
+                .addGap(18, 18, 18)
+                .addComponent(b_batal, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(117, 117, 117))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +260,8 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
                     .addComponent(b_tambah)
                     .addComponent(b_ubah)
                     .addComponent(b_hapus)
-                    .addComponent(b_reset))
+                    .addComponent(b_reset)
+                    .addComponent(b_batal))
                 .addContainerGap(164, Short.MAX_VALUE))
         );
 
@@ -235,8 +305,128 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_t_idUserActionPerformed
 
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+        //ambil input dari textField kode dan nama jurusan
+        String id_user = t_idUser.getText();
+        String nama_user = t_namaUser.getText();
+        String alamat = t_alamat.getText();
+        String noHP = t_noHP.getText();
+        String role = c_role.getSelectedItem().toString();
+        String pw = t_pw.getText();
+        
+        //Query SQL
+        try {
+            String sql = "INSERT INTO kategori(id_user, nama_user, alamat,no_hp, password, role)"
+                    +"VALUES ";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_user);
+            ps.setString(2, nama_user);
+            ps.setString(3, alamat);
+            ps.setString(4, noHP);
+            ps.setString(5, role);
+            ps.setString(6, pw);
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_tambahActionPerformed
+
+    private void b_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ubahActionPerformed
+         //ambil input dari textField kode dan nama jurusan
+        String id_user = t_idUser.getText();
+        String nama_user = t_namaUser.getText();
+        String alamat = t_alamat.getText();
+        String noHP = t_noHP.getText();
+        String role = c_role.getSelectedItem().toString();
+        String pw = t_pw.getText();
+        
+        //Query SQL
+        try {
+            String sql = "UPDATE user SET id_use=?, nama_use=?, alamat=?, no_hp=?, pw=?, role=?"
+                    +"WHERE id_user=?";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_user);
+            ps.setString(2, nama_user);
+            ps.setString(3, alamat);
+            ps.setString(4, noHP);
+            ps.setString(5, role);
+            ps.setString(6, pw);
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal diubah!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_ubahActionPerformed
+
+    private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
+         //ambil input dari textField kode dan nama jurusan
+        String id_user = t_idUser.getText();
+        String nama_user = t_namaUser.getText();
+        String alamat = t_alamat.getText();
+        String noHP = t_noHP.getText();
+        String role = c_role.getSelectedItem().toString();
+        String pw = t_pw.getText();
+        
+        //Query SQL
+        try {
+            String sql = "DELETE FROM user WHERE id_user";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_user);
+            ps.setString(2, nama_user);
+            ps.setString(3, alamat);
+            ps.setString(4, noHP);
+            ps.setString(5, role);
+            ps.setString(6, pw);
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_hapusActionPerformed
+
+    private void b_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_resetActionPerformed
+        reset();
+    }//GEN-LAST:event_b_resetActionPerformed
+
+    private void b_batalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_batalActionPerformed
+        p_kategoriuser panelKembali = new p_kategoriuser();
+        panelKembali.setSize(p_dasar.getSize());
+        panelKembali.setVisible(true);
+
+        p_dasar.removeAll();
+        p_dasar.add(panelKembali);
+        p_dasar.revalidate();
+        p_dasar.repaint();
+    }//GEN-LAST:event_b_batalActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_batal;
     private javax.swing.JButton b_hapus;
     private javax.swing.JButton b_reset;
     private javax.swing.JButton b_tambah;

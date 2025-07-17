@@ -4,17 +4,77 @@
  */
 package Main;
 
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Pongo
  */
 public class p_kategoriuser extends javax.swing.JPanel {
-
-    /**
-     * Creates new form p_kategoriuser
-     */
+    ArrayList<String[]> dataUser = new ArrayList<>();
+    
     public p_kategoriuser() {
         initComponents();
+        load_table_user();
+    }
+    
+    void load_table_user(){
+         DefaultTableModel model = new DefaultTableModel();
+       
+       //menambahkan kolom ke dlm tabel
+      model.addColumn("No");
+       model.addColumn("ID User");
+       model.addColumn("Nama User"); 
+       model.addColumn("Alamat"); 
+       model.addColumn("No HP"); 
+       model.addColumn("role");
+       
+       dataUser.clear();//mengosongkan list agar tidak duplikat
+       int no = 1; 
+       //Query SL utk mengambil semua data dari tabel
+       String sql = "SELECT * FROM user";
+       
+       try {
+           Connection con = koneksiDB.konek();//membuka koneksi ke DB
+           //membut Statement utk menjalankan query SQL
+           Statement st = con.createStatement();
+           //menjalankan query
+           ResultSet rs = st.executeQuery(sql);
+          
+           //melakukan iterasi utk setiap baris data
+           while (rs.next()) {
+               
+               
+               //simpan data user 
+               String [] data = {
+                   rs.getString("id_user"),
+                   rs.getString("nama_user"),
+                   rs.getString("alamat"),
+                   rs.getString("no_hp"),
+                   rs.getString("role"),
+                   rs.getString("password")
+               };
+               dataUser.add(data);
+               //membuat array berisi data satu baris
+               Object[] baris = {
+               no++,data[0], data[1], data[2], data[3], data[4]};
+               //menambahkan array ke dlm tabel
+               model.addRow(baris);
+           }
+       } catch (SQLException sQLException) {
+           //menampilkan pesan error
+           JOptionPane.showMessageDialog(null, "Gagal mengambil data!");
+           System.out.println(sQLException);
+       }
+       table_dataKaryawan.setModel(model);
+       
     }
 
     /**
@@ -46,6 +106,11 @@ public class p_kategoriuser extends javax.swing.JPanel {
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
 
         t_cariKaryawan.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Cari Nama Karyawan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
@@ -60,6 +125,11 @@ public class p_kategoriuser extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        table_dataKaryawan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_dataKaryawanMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(table_dataKaryawan);
 
         javax.swing.GroupLayout p_mainLayout = new javax.swing.GroupLayout(p_main);
@@ -120,6 +190,53 @@ public class p_kategoriuser extends javax.swing.JPanel {
             .addComponent(p_dasar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+        //buat objek panel edit
+        p_editDataKaryawan panelBaru = new p_editDataKaryawan();
+         // Sembunyikan tombol ubah di dalam panel edit
+        panelBaru.tambahUser();
+        //tampil ke panel dasar
+        panelBaru.setSize(p_dasar.getSize());
+        panelBaru.setVisible(true);
+
+        p_dasar.setLayout(new BorderLayout());
+        p_dasar.setVisible(false);
+        p_dasar.removeAll();
+        p_dasar.add(panelBaru, BorderLayout.CENTER);
+        p_dasar.repaint();
+        p_dasar.revalidate();
+        p_dasar.setVisible(true);
+    }//GEN-LAST:event_b_tambahActionPerformed
+
+    private void table_dataKaryawanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_dataKaryawanMouseClicked
+        int barisdipilih = table_dataKaryawan.rowAtPoint(evt.getPoint());
+        
+        if (barisdipilih >= 0) {
+            String id = table_dataKaryawan.getValueAt(barisdipilih, 1).toString();
+            String nama = table_dataKaryawan.getValueAt(barisdipilih, 2).toString();
+            String alamat = table_dataKaryawan.getValueAt(barisdipilih, 3).toString();
+            String noHP = table_dataKaryawan.getValueAt(barisdipilih, 4).toString();
+            String role = table_dataKaryawan.getValueAt(barisdipilih, 5).toString();
+            
+            //ambil pw dari lis data karena tidak ditampilkan di tabel
+            String pw = dataUser.get(barisdipilih)[5];
+            
+            p_editDataKaryawan panelEdit = new p_editDataKaryawan();
+            panelEdit.tampildata(id, nama, alamat, noHP, role, pw);
+            panelEdit.ubahUser();// tombol ubah tampil, tombol simpan disembunyikan
+
+            // tampilkan ke p_dasar
+            panelEdit.setSize(p_dasar.getSize());
+            panelEdit.setVisible(true);
+
+            p_dasar.removeAll();
+            p_dasar.setLayout(new BorderLayout());
+            p_dasar.add(panelEdit, BorderLayout.CENTER);
+            p_dasar.revalidate();
+            p_dasar.repaint();
+        }
+    }//GEN-LAST:event_table_dataKaryawanMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
