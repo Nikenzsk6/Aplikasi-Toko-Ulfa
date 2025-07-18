@@ -10,17 +10,20 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 /**
 /**
  *
  * @author HP
  */
+
 public class p_Transaksi extends javax.swing.JPanel {
 
     /**
      * Creates new form Transaksi
      */
-    
+    DefaultTableModel modelTransaksi;
+    ArrayList<String[]> daftarBelanja = new ArrayList<>();
 
         
     
@@ -29,6 +32,11 @@ public class p_Transaksi extends javax.swing.JPanel {
         initComponents();
         reset();
         load_tabel_transaksi();
+        setTableModel();
+    }
+    void setTableModel(){
+        modelTransaksi = new DefaultTableModel(new String[]{"No","Nama Produk","Jumlah","Harga","subTotal"}, 0);
+        t_transaksi.setModel(modelTransaksi);
     }
      void reset(){
         t_IdTransk.setText(null);
@@ -74,6 +82,20 @@ public class p_Transaksi extends javax.swing.JPanel {
     }
     t_transaksi.setModel(model);
 }
+    void hitungTotalBelanja(){
+        int total = 0;
+        for(String[]item : daftarBelanja){
+            total+= Integer.parseInt(item[3]);
+        }
+        t_TtlBelanja.setText(String.valueOf(total));
+    }
+    void resetInputProduk(){
+           t_NamaProduk.setText("");
+    t_JmlBeli.setText("");
+    t_HargaSatuan.setText("");
+    t_TtlHarga.setText("");
+
+    }
 
 
     /**
@@ -104,7 +126,7 @@ public class p_Transaksi extends javax.swing.JPanel {
         b_reset = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_transaksi = new javax.swing.JTable();
-        jButton7 = new javax.swing.JButton();
+        b_Cetak = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -134,6 +156,11 @@ public class p_Transaksi extends javax.swing.JPanel {
         t_HargaSatuan.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Harga Satuan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
         t_TtlHarga.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Total Harga", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        t_TtlHarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_TtlHargaActionPerformed(evt);
+            }
+        });
 
         t_TtlBelanja.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Total Belanja", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
@@ -154,6 +181,11 @@ public class p_Transaksi extends javax.swing.JPanel {
         b_cariProduk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
         b_cariProduk.setText("Cari Produk");
         b_cariProduk.setToolTipText("");
+        b_cariProduk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_cariProdukActionPerformed(evt);
+            }
+        });
 
         b_tambah.setBackground(new java.awt.Color(51, 204, 0));
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -205,13 +237,13 @@ public class p_Transaksi extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(t_transaksi);
 
-        jButton7.setBackground(new java.awt.Color(153, 153, 153));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
-        jButton7.setText("Cetak");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        b_Cetak.setBackground(new java.awt.Color(153, 153, 153));
+        b_Cetak.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        b_Cetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
+        b_Cetak.setText("Cetak");
+        b_Cetak.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                b_CetakActionPerformed(evt);
             }
         });
 
@@ -230,7 +262,7 @@ public class p_Transaksi extends javax.swing.JPanel {
                             .addContainerGap()
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(28, 28, 28)
-                            .addComponent(jButton7))
+                            .addComponent(b_Cetak))
                         .addGroup(jPanel3Layout.createSequentialGroup()
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
@@ -312,7 +344,7 @@ public class p_Transaksi extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton7)
+                        .addComponent(b_Cetak)
                         .addGap(48, 48, 48))))
         );
 
@@ -378,10 +410,35 @@ public class p_Transaksi extends javax.swing.JPanel {
 
     private void t_KembalianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_KembalianActionPerformed
         // TODO add your handling code here:
+        try {
+        int bayar = Integer.parseInt(t_Bayar.getText());
+        int totalBelanja = Integer.parseInt(t_TtlBelanja.getText());
+        int kembalian = bayar - totalBelanja;
+        t_Kembalian.setText(String.valueOf(kembalian));
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Input bayar tidak valid!");
+    }
+
     }//GEN-LAST:event_t_KembalianActionPerformed
 
     private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
- 
+
+        try {
+            
+            String namaProduk = t_NamaProduk.getText();
+            int jumlah = Integer.parseInt(t_JmlBeli.getText());
+            int harga = Integer.parseInt(t_HargaSatuan.getText());
+            int subTotal = jumlah * harga;
+            Object[] row = {modelTransaksi.getRowCount() + 1, namaProduk, jumlah, harga, subTotal};
+            daftarBelanja.add(new String[]{namaProduk, String.valueOf(jumlah), String.valueOf(harga), String.valueOf(subTotal)});
+            hitungTotalBelanja();
+            resetInputProduk();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Data Tidak Valid!"+ e.getMessage());
+        }
+        
+        
+        
     }//GEN-LAST:event_b_tambahActionPerformed
 
     private void b_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ubahActionPerformed
@@ -389,39 +446,107 @@ public class p_Transaksi extends javax.swing.JPanel {
     }//GEN-LAST:event_b_ubahActionPerformed
 
     private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
-        String idTransk = t_IdTransk.getText();
-          String sql = "DELETE FROM guru WHERE id_transaksi=?";
-       
-         try {
-            Connection conn = koneksiDB.konek();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, idTransk);
-            ps.execute();
-            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
-             System.out.println(sQLException);
-        }
-         load_tabel_transaksi();
-         reset();
+         int row = t_transaksi.getSelectedRow();
+    if(row >= 0){
+        modelTransaksi.removeRow(row);
+        daftarBelanja.remove(row);
+        hitungTotalBelanja();
+    } else {
+        JOptionPane.showMessageDialog(null, "Pilih item yang ingin dihapus!");
+    }
+
     }//GEN-LAST:event_b_hapusActionPerformed
 
     private void b_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_resetActionPerformed
         reset();
     }//GEN-LAST:event_b_resetActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void b_CetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_CetakActionPerformed
+         String idTransaksi = t_IdTransk.getText();
+    String namaPelanggan = t_NamaPelanggan.getText();
+    int totalBelanja = Integer.parseInt(t_TtlBelanja.getText());
+    int bayar = Integer.parseInt(t_Bayar.getText());
+    int kembalian = Integer.parseInt(t_Kembalian.getText());
 
-    }//GEN-LAST:event_jButton7ActionPerformed
+    try {
+        Connection conn = koneksiDB.konek();
+        conn.setAutoCommit(false);
+
+        PreparedStatement pstTrans = conn.prepareStatement(
+            "INSERT INTO transaksi(id_transaksi, nama_pelanggan, total, bayar, kembalian, tanggal) VALUES (?, ?, ?, ?, ?, NOW())");
+        pstTrans.setString(1, idTransaksi);
+        pstTrans.setString(2, namaPelanggan);
+        pstTrans.setInt(3, totalBelanja);
+        pstTrans.setInt(4, bayar);
+        pstTrans.setInt(5, kembalian);
+        pstTrans.executeUpdate();
+
+        for (String[] item : daftarBelanja) {
+            String namaProduk = item[0];
+            int jumlah = Integer.parseInt(item[1]);
+            int subtotal = Integer.parseInt(item[3]);
+
+            PreparedStatement pstGetId = conn.prepareStatement("SELECT id_produk FROM produk WHERE nama_produk=?");
+            pstGetId.setString(1, namaProduk);
+            ResultSet rs = pstGetId.executeQuery();
+            String idProduk = "";
+            if (rs.next()) {
+                idProduk = rs.getString("id_produk");
+            }
+
+            PreparedStatement pstDetail = conn.prepareStatement(
+                "INSERT INTO detail_transaksi(id_transaksi, id_produk, jumlah_beli, subtotal) VALUES (?, ?, ?, ?)");
+            pstDetail.setString(1, idTransaksi);
+            pstDetail.setString(2, idProduk);
+            pstDetail.setInt(3, jumlah);
+            pstDetail.setInt(4, subtotal);
+            pstDetail.executeUpdate();
+
+            PreparedStatement pstUpdateStok = conn.prepareStatement(
+                "UPDATE produk SET stok = stok - ? WHERE id_produk=?");
+            pstUpdateStok.setInt(1, jumlah);
+            pstUpdateStok.setString(2, idProduk);
+            pstUpdateStok.executeUpdate();
+        }
+
+        conn.commit();
+        JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan!");
+        reset();
+        modelTransaksi.setRowCount(0);
+        daftarBelanja.clear();
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Gagal simpan transaksi: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    }//GEN-LAST:event_b_CetakActionPerformed
+
+    private void b_cariProdukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariProdukActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_b_cariProdukActionPerformed
+
+    private void t_TtlHargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_TtlHargaActionPerformed
+        // TODO add your handling code here:
+         try {
+        int jumlah = Integer.parseInt(t_JmlBeli.getText());
+        int harga = Integer.parseInt(t_HargaSatuan.getText());
+        t_TtlHarga.setText(String.valueOf(jumlah * harga));
+    } catch (Exception e) {
+        t_TtlHarga.setText("0");
+    }
+
+    }//GEN-LAST:event_t_TtlHargaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_Cetak;
     private javax.swing.JButton b_cariProduk;
     private javax.swing.JButton b_hapus;
     private javax.swing.JButton b_reset;
     private javax.swing.JButton b_tambah;
     private javax.swing.JButton b_ubah;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
