@@ -13,6 +13,11 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.util.JRLoader;
+import java.util.Map;
+import java.util.HashMap;
 
 
 /**
@@ -28,70 +33,19 @@ public class p_stokProduk extends javax.swing.JPanel {
         initComponents();
         load_table_produk();
         reset();
-       
     }
 
     void reset(){
         t_cariProduk.setText(null);
     }
-    
-    public void load_table_model(String kataKunci) {
-    DefaultTableModel model = new DefaultTableModel();
-    model.addColumn("No");
-    model.addColumn("ID Produk");
-    model.addColumn("Nama Produk");
-    model.addColumn("Kategori");
-    model.addColumn("Stok");
-    model.addColumn("Harga");
-
-    String sql;
-    Connection con = koneksiDB.konek();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try {
-        if (kataKunci.isEmpty()) {
-            sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
-                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
-                + "ORDER BY p.id_produk";
-            ps = con.prepareStatement(sql);
-        } else {
-            sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
-                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
-                + "WHERE p.nama_produk LIKE ? ORDER BY p.id_produk";
-            ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + kataKunci + "%");
-        }
-
-        rs = ps.executeQuery();
-        int no = 1;
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                no++,
-                rs.getString("id_produk"),
-                rs.getString("nama_produk"),
-                rs.getString("kategori"),
-                rs.getInt("stok"),
-                rs.getInt("harga")
-            });
-        }
-
-        table_dataproduk.setModel(model);
-
-    } catch (SQLException sQLException) {
-        JOptionPane.showMessageDialog(null, "Data tidak ditemukan: " + sQLException.getMessage());
-    }
-}
-
-    
-    public void load_table_produk(){
+     void load_table_produk(){
          DefaultTableModel model = new DefaultTableModel();
        
        //menambahkan kolom ke dlm tabel
       model.addColumn("No");
        model.addColumn("ID produk");
-       model.addColumn("Nama Produk"); 
-       model.addColumn("Kategori "); 
+       model.addColumn("Nama produk"); 
+       model.addColumn("Kategori"); 
        model.addColumn("Stok"); 
        model.addColumn("Harga");
        
@@ -99,7 +53,7 @@ public class p_stokProduk extends javax.swing.JPanel {
        int no = 1; 
        //Query SL utk mengambil semua data dari tabel
        String sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori, p.stok, p.harga "
-               +"FROM produk p JOIN kategori k ON p.id_kategori=k.id_kategori";
+               +"FROM produk p, kategori k WHERE p.id_kategori=k.id_kategori";
        
        try {
            Connection con = koneksiDB.konek();//membuka koneksi ke DB
@@ -214,6 +168,11 @@ public class p_stokProduk extends javax.swing.JPanel {
         b_cetak.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_cetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
         b_cetak.setText("Cetak");
+        b_cetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_cetakActionPerformed(evt);
+            }
+        });
 
         b_cari.setBackground(new java.awt.Color(153, 153, 153));
         b_cari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
@@ -296,7 +255,7 @@ public class p_stokProduk extends javax.swing.JPanel {
 
     private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
         
-        popUp_editProduk pd = new popUp_editProduk(this);
+        popUp_editPtoduk pd = new popUp_editPtoduk();
         pd.tambahProduk();
         pd.setVisible(true);
         
@@ -311,15 +270,14 @@ public class p_stokProduk extends javax.swing.JPanel {
         
         if (barisdipilih >= 0) {
             String id_produk = table_dataproduk.getValueAt(barisdipilih, 1).toString();
-            String nama = table_dataproduk.getValueAt(barisdipilih, 2).toString();
-            String kategori = table_dataproduk.getValueAt(barisdipilih, 3).toString();
-            String stok = table_dataproduk.getValueAt(barisdipilih, 4).toString();
-            String harga = table_dataproduk.getValueAt(barisdipilih, 5).toString();
+            String kategori = table_dataproduk.getValueAt(barisdipilih, 2).toString();
+            String nama = table_dataproduk.getValueAt(barisdipilih, 3).toString();
+            String harga = table_dataproduk.getValueAt(barisdipilih, 4).toString();
+            String stok = table_dataproduk.getValueAt(barisdipilih, 5).toString();
             
             
-            
-           popUp_editProduk panelEdit = new popUp_editProduk(this);
-            panelEdit.tampildata(id_produk, nama, kategori, stok, harga);
+           popUp_editPtoduk panelEdit = new popUp_editPtoduk();
+            panelEdit.tampildata(id_produk, kategori, nama, harga, stok);
             panelEdit.ubahProduk();// tombol ubah tampil, tombol simpan disembunyikan
 
             panelEdit.setVisible(true);
@@ -329,11 +287,60 @@ public class p_stokProduk extends javax.swing.JPanel {
 
     private void b_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariActionPerformed
        String kataKunci = t_cariProduk.getText().trim();
-        load_table_model(kataKunci);
        
+       String sql;
+       Connection con = koneksiDB.konek();
+       PreparedStatement ps = null;
+       ResultSet rs = null;
        
+        try {
+            if (kataKunci.isEmpty()) {
+                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk ORDER BY id_produk ASC";
+                ps = con.prepareStatement(sql);
+            } else {
+                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk"
+                        + "WHERE nama_produk LIKE ? ORDER BY id_produk ASC";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, "%" + kataKunci + "%");
+            }
+            
+            rs = ps.executeQuery();
+            JOptionPane.showMessageDialog(null, "Data ditemukan");
+        } catch (SQLException sQLException) {
+            JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
+        }
        
     }//GEN-LAST:event_b_cariActionPerformed
+
+    private void b_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cetakActionPerformed
+       
+        try {
+            // Path ke file .jasper
+            String reportPath = "src/report/Lap_StokProduk.jasper";
+
+            // Load file report
+            JasperReport jReport = (JasperReport) JRLoader.loadObjectFromFile(reportPath);
+
+            // Koneksi ke database
+            Connection conn = koneksiDB.konek(); // Pastikan ini adalah koneksi aktif
+
+            // Isi parameter (jika tidak ada, bisa pakai null)
+            Map<String, Object> param = new HashMap<>();
+            // param.put("nama_param", nilai); // jika ada parameter
+
+            // Isi report dengan data dari database
+            JasperPrint jPrint = JasperFillManager.fillReport(jReport, param, conn);
+
+            // Tampilkan report di viewer
+            JasperViewer.viewReport(jPrint, false);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Gagal mencetak laporan: " + ex.getMessage());
+            System.out.println(ex);
+            ex.printStackTrace();
+        }
+    
+    }//GEN-LAST:event_b_cetakActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -3,11 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Main;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+
 /**
  *
  * @author HP
@@ -127,54 +123,7 @@ public class f_login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         //ambil teks yang dimasukkan user pada field username
-        String username = tUsername.getText();
-        
-        //ambil teks yang dimasukkan user  pada fiels pw
-        String password = tPassowrd.getText();
-        
-        //periksa apakah username dan pw tidak kosong
-        if(username.length() !=0 && password.length() !=0){
-            try {
-                //Query SQL utk mencari user dgn username dan pw (dihash dengan MD5)
-                String sql = "SELECT * FROM user WHERE username = ? AND password=md5(?)";
-                // yang berada di dlm petk 2 harus sesuai dgn di database
-                 
-                // Buat koneksi ke database
-                Connection con = koneksiDB.konek();
-                
-                //siapkan statement SQL dgn parameter
-                PreparedStatement ps = con.prepareStatement(sql);
-                
-                //isi parameter pertama (?) dgn username
-                ps.setString(1, username);
-                
-                //isi parameter kedua (?) dgn password
-                ps.setString(2, password);
-                
-                //jalankan query dan ambil hasilnya
-                ResultSet rs = ps.executeQuery();
-                
-                //jika hasil query memiliki baris (berarti login berhasil)
-                if (rs.next()) {
-                    //Tutup form login
-                    dispose();
-                    
-                    //Buka form dahboard
-                    new f_Utama().setVisible(true);        
-                }else {
-                    //jika data tidak ditemukan, tampilkan pesan error
-                    JOptionPane.showMessageDialog(null, "Username/Password salah");
-                }
-            } catch (SQLException sQLException) {
-                //jia terjdi kesalahan SQl, tampilkan pedan error
-                JOptionPane.showMessageDialog(null, sQLException.getMessage());
-            }
-            
-        }else{
-            //jika username  / pw kosong, beri peringatan ke user
-            JOptionPane.showMessageDialog(null, "Username/Password tidak boleh kosong");
-        }
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tUsernameActionPerformed

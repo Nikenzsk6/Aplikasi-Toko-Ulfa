@@ -17,16 +17,13 @@ import javax.swing.JOptionPane;
  *
  * @author HP
  */
-public class popUp_editProduk extends javax.swing.JFrame {
+public class popUp_editPtoduk extends javax.swing.JFrame {
     
-    private p_stokProduk panelUtama;
     /**
      * Creates new form popUp_editPtoduk
      */
-    public popUp_editProduk(p_stokProduk panelUtama) {
+    public popUp_editPtoduk() {
         initComponents();
-        comboKategori();
-        this.panelUtama = panelUtama;
     }
     
     void reset(){
@@ -40,8 +37,8 @@ public class popUp_editProduk extends javax.swing.JFrame {
         t_idProduk.setEditable(true);
     }
     
-    public void tampildata(String id_produk,String nama , String kategori,  String stok,
-    String harga){
+    public void tampildata(String id_produk, String kategori, String nama,  String harga,
+    String stok){
      t_idProduk.setText(id_produk);
      c_kategori.setSelectedItem(kategori);
      t_namaProduk2.setText(nama);
@@ -60,11 +57,8 @@ public class popUp_editProduk extends javax.swing.JFrame {
         b_hapus.setVisible(false);
     }
     void comboKategori(){
-         // Kosongkan dulu item yang ada di ComboBox sebelum mengisi ulang
-        c_kategori.removeAllItems();
-        String sql = "SELECT nama_kategori FROM kategori ORDER BY nama_kategori";
-        
         try {
+           String sql = "SELECT * FROM kategori";
            Connection con = koneksiDB.konek();
            Statement st = con.createStatement();
            ResultSet rs = st.executeQuery(sql);
@@ -73,15 +67,17 @@ public class popUp_editProduk extends javax.swing.JFrame {
                c_kategori.addItem(rs.getString("nama_kategori"));
            }
        } catch (SQLException e) {
-            System.out.println(e);
            //koosng, tidak ada penanganan
        }
+       //kosongkan pilihan defaylt CBox
+       c_kategori.setSelectedItem(null);
     }
     
     String idKategori(String namaKategori){
-         String sql = "SELECT * FROM kategori WHERE nama_kategori=?";
        try{
+           String sql = "SELECT * FROM kategori WHERE nama_kategori=?";
            Connection con = koneksiDB.konek();
+           Statement st = con.createStatement();
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, namaKategori);
            ResultSet rs = ps.executeQuery();
@@ -130,20 +126,20 @@ public class popUp_editProduk extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Nama Kategori");
+        jLabel1.setText("Nama Produk");
 
         c_kategori.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Nama Produk");
+        jLabel2.setText("Nama Kategori");
 
         t_harga.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         t_harga.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Stok");
+        jLabel3.setText("Harga");
 
         t_stok.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         t_stok.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -158,7 +154,7 @@ public class popUp_editProduk extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Harga");
+        jLabel4.setText("Stok");
 
         b_tambah.setBackground(new java.awt.Color(51, 204, 0));
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -216,23 +212,22 @@ public class popUp_editProduk extends javax.swing.JFrame {
         p_dasar.setLayout(p_dasarLayout);
         p_dasarLayout.setHorizontalGroup(
             p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_dasarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(b_reset1)
+                .addGap(41, 41, 41)
+                .addComponent(b_batal)
+                .addGap(97, 97, 97))
             .addGroup(p_dasarLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_dasarLayout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(b_reset1)
-                            .addGap(41, 41, 41)
-                            .addComponent(b_batal)
-                            .addGap(70, 70, 70))
-                        .addGroup(p_dasarLayout.createSequentialGroup()
-                            .addComponent(b_ubah)
-                            .addGap(18, 18, 18)
-                            .addComponent(b_tambah)
-                            .addGap(18, 18, 18)
-                            .addComponent(b_hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel5)
+                    .addGroup(p_dasarLayout.createSequentialGroup()
+                        .addComponent(b_ubah)
+                        .addGap(18, 18, 18)
+                        .addComponent(b_tambah)
+                        .addGap(18, 18, 18)
+                        .addComponent(b_hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(t_stok)
                         .addComponent(jLabel3)
@@ -254,21 +249,21 @@ public class popUp_editProduk extends javax.swing.JFrame {
                 .addComponent(t_idProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(jLabel2)
-                .addGap(2, 2, 2)
-                .addComponent(t_namaProduk2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(c_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(c_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(t_namaProduk2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t_stok, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(t_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(t_stok, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_ubah)
                     .addComponent(b_tambah)
@@ -277,7 +272,7 @@ public class popUp_editProduk extends javax.swing.JFrame {
                 .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_batal)
                     .addComponent(b_reset1))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -310,37 +305,31 @@ public class popUp_editProduk extends javax.swing.JFrame {
         String id_produk = t_idProduk.getText();
         String kategori = idKategori(c_kategori.getSelectedItem().toString());
         String nama_produk = t_namaProduk2.getText();
-        int harga = Integer.parseInt(t_harga.getText());
-        int stok = Integer.parseInt(t_stok.getText());
+        String harga = t_harga.getText();
+        String stok = t_stok.getText();
         
         //Query SQL
         try {
             String sql = "INSERT INTO produk(id_produk, nama_produk, id_kategori, harga, stok)"
-                    + "VALUES (?,?,?,?,?)";
+                    + "SET (?,?,?,?,?)";
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, id_produk);
-            ps.setString(2, nama_produk);
-            ps.setString(3, kategori);
-            ps.setInt(4, harga);
-            ps.setInt(5, stok);
+            ps.setString(2, kategori);
+            ps.setString(3, nama_produk);
+            ps.setString(4, harga);
+            ps.setString(5, stok);
             //jalankan query
             ps.execute();
 
             //tampilkan pesan bahwa data berhasil disimpan
             JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
-            // REFRESH TABEL di panel utama
-            if(panelUtama != null){
-                panelUtama.load_table_produk(); // update data
-            }
-            this.dispose(); // TUTUP popup
         } catch (SQLException sQLException) {
             //tampilkan pesan error jika gagal menyimpan
-            JOptionPane.showMessageDialog(null, "Data gagal disimpan");
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan!");
             System.out.println(sQLException);
         } 
-        
         reset();
     }//GEN-LAST:event_b_tambahActionPerformed
 
@@ -354,14 +343,14 @@ public class popUp_editProduk extends javax.swing.JFrame {
         
         //Query SQL
         try {
-            String sql = "UPDATE produk SET id_produk=?, nama_produk=?, id_kategori=?, stok=?, harga=?"
+            String sql = "UPDATE produk SET id_produk=?, kategori=?, nama_produk=?, stok=?, harga=?"
                     +"WHERE id_produk=?";
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, id_produk);
-            ps.setString(2, nama_produk);
-            ps.setString(3, kategori);
+            ps.setString(2, kategori);
+            ps.setString(3, nama_produk);
             ps.setString(4, harga);
             ps.setString(5, stok);
             //jalankan query
@@ -369,11 +358,6 @@ public class popUp_editProduk extends javax.swing.JFrame {
 
             //tampilkan pesan bahwa data berhasil disimpan
             JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-            // REFRESH TABEL di panel utama
-           if(panelUtama != null){
-                panelUtama.load_table_produk(); // update data
-            }
-            this.dispose(); // TUTUP popup
         } catch (SQLException sQLException) {
             //tampilkan pesan error jika gagal menyimpan
             JOptionPane.showMessageDialog(null, "Data gagal diubah!");
@@ -403,11 +387,6 @@ public class popUp_editProduk extends javax.swing.JFrame {
 
             //tampilkan pesan bahwa data berhasil disimpan
             JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
-            // REFRESH TABEL di panel utama
-           if(panelUtama != null){
-                panelUtama.load_table_produk(); // update data
-            }
-           this.dispose(); // TUTUP popup
         } catch (SQLException sQLException) {
             //tampilkan pesan error jika gagal menyimpan
             JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
@@ -433,21 +412,20 @@ public class popUp_editProduk extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(popUp_editProduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(popUp_editPtoduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(popUp_editProduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(popUp_editPtoduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(popUp_editProduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(popUp_editPtoduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(popUp_editProduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(popUp_editPtoduk.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new popUp_editProduk(null).setVisible(true);
+                new popUp_editPtoduk().setVisible(true);
             }
         });
     }
