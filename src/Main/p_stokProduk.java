@@ -13,11 +13,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.view.JasperViewer;
-import net.sf.jasperreports.engine.util.JRLoader;
-import java.util.Map;
-import java.util.HashMap;
 
 
 /**
@@ -168,11 +163,6 @@ public class p_stokProduk extends javax.swing.JPanel {
         b_cetak.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_cetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
         b_cetak.setText("Cetak");
-        b_cetak.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                b_cetakActionPerformed(evt);
-            }
-        });
 
         b_cari.setBackground(new java.awt.Color(153, 153, 153));
         b_cari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
@@ -208,12 +198,11 @@ public class p_stokProduk extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(p_mainLayout.createSequentialGroup()
-                        .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(b_cari, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(b_tambah)
-                                .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(b_reset)))
+                        .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(b_tambah)
+                            .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(b_reset)
+                            .addComponent(b_cari))
                         .addGap(39, 39, 39)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(b_cetak))
@@ -311,36 +300,6 @@ public class p_stokProduk extends javax.swing.JPanel {
         }
        
     }//GEN-LAST:event_b_cariActionPerformed
-
-    private void b_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cetakActionPerformed
-       
-        try {
-            // Path ke file .jasper
-            String reportPath = "src/report/Lap_StokProduk.jasper";
-
-            // Load file report
-            JasperReport jReport = (JasperReport) JRLoader.loadObjectFromFile(reportPath);
-
-            // Koneksi ke database
-            Connection conn = koneksiDB.konek(); // Pastikan ini adalah koneksi aktif
-
-            // Isi parameter (jika tidak ada, bisa pakai null)
-            Map<String, Object> param = new HashMap<>();
-            // param.put("nama_param", nilai); // jika ada parameter
-
-            // Isi report dengan data dari database
-            JasperPrint jPrint = JasperFillManager.fillReport(jReport, param, conn);
-
-            // Tampilkan report di viewer
-            JasperViewer.viewReport(jPrint, false);
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Gagal mencetak laporan: " + ex.getMessage());
-            System.out.println(ex);
-            ex.printStackTrace();
-        }
-    
-    }//GEN-LAST:event_b_cetakActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

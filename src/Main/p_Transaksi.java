@@ -3,15 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package Main;
+
+import Main.koneksiDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
-/**
+ * /**
  *
  * @author HP
  */
@@ -20,17 +24,17 @@ public class p_Transaksi extends javax.swing.JPanel {
     /**
      * Creates new form Transaksi
      */
-    
-
-        
-    
+    DefaultTableModel modelTransaksi;
+    ArrayList<String[]> daftarBelanja = new ArrayList<>();
 
     public p_Transaksi() {
         initComponents();
         reset();
         load_tabel_transaksi();
+
     }
-     void reset(){
+
+    void reset() {
         t_IdTransk.setText(null);
         t_IdTransk.setEditable(true);
         t_NamaPelanggan.setText(null);
@@ -41,40 +45,59 @@ public class p_Transaksi extends javax.swing.JPanel {
         t_Bayar.setText(null);
         t_Kembalian.setText(null);
     }
+
     void load_tabel_transaksi() {
-    DefaultTableModel model = new DefaultTableModel();
-    
-    model.addColumn("No.");
-    model.addColumn("Nama Produk");
-    model.addColumn("Jumlah");
-    model.addColumn("Harga Satuan");
-    model.addColumn("Subtotal");
-    int no = 1;
-    String sql = "SELECT p.nama_produk, dt.jumlah_beli, p.harga, dt.subtotal "
-               + "FROM detail_transaksi dt "
-               + "JOIN produk p ON dt.id_produk = p.id_produk ";
-               
-    
-    try {
-         Connection conn = koneksiDB.konek();
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("No.");
+        model.addColumn("Nama Produk");
+        model.addColumn("Jumlah");
+        model.addColumn("Harga Satuan");
+        model.addColumn("Subtotal");
+        int no = 1;
+        String sql = "SELECT p.nama_produk, dt.jumlah_beli, p.harga, dt.subtotal "
+                + "FROM detail_transaksi dt "
+                + "JOIN produk p ON dt.id_produk = p.id_produk ";
+
+        try {
+            Connection conn = koneksiDB.konek();
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
-        while (rs.next()) {
-            String nama_produk = rs.getString("nama_produk");
-            int jml = rs.getInt("jumlah_beli");
-            int harga = rs.getInt("harga");
-            int sbtotal = rs.getInt("subtotal");
-            Object[] baris = {no++, nama_produk, jml, harga, sbtotal};
-            model.addRow(baris);
+            while (rs.next()) {
+                String nama_produk = rs.getString("nama_produk");
+                int jml = rs.getInt("jumlah_beli");
+                int harga = rs.getInt("harga");
+                int sbtotal = rs.getInt("subtotal");
+                Object[] baris = {no++, nama_produk, jml, harga, sbtotal};
+                model.addRow(baris);
+            }
+        } catch (SQLException sQLException) {
+            JOptionPane.showMessageDialog(null, "Gagal mengambil data: " + sQLException.getMessage());
+            System.out.println("SQL Error: " + sQLException.getMessage());
         }
-    } catch (SQLException sQLException) {
-        JOptionPane.showMessageDialog(null, "Gagal mengambil data: " + sQLException.getMessage());
-        System.out.println("SQL Error: " + sQLException.getMessage());
+        t_transaksi.setModel(model);
     }
-    t_transaksi.setModel(model);
-}
 
+    void setTableModel() {
+        modelTransaksi = DefaultTableModel(new String[]{"No", "Nama Produk", "Jumlah", "Harga", "subTotal"}, 0);
+        t_transaksi.setModel(modelTransaksi);
+    }
+
+    void hitungTotalBelanja() {
+        int total = 0;
+        for (String[] item : daftarBelanja) {
+            total = Integer.parseInt(item[3]);
+        }
+        t_TtlBelanja.setText(String.valueOf(total));
+    }
+
+    void resetInputProduk() {
+        t_NamaProduk.setText("");
+        t_HargaSatuan.setText("");
+        t_JmlBeli.setText("");
+        t_TtlHarga.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -134,6 +157,11 @@ public class p_Transaksi extends javax.swing.JPanel {
         t_HargaSatuan.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Harga Satuan", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
         t_TtlHarga.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Total Harga", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        t_TtlHarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_TtlHargaActionPerformed(evt);
+            }
+        });
 
         t_TtlBelanja.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Total Belanja", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
@@ -225,11 +253,11 @@ public class p_Transaksi extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(jPanel3Layout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(28, 28, 28)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton7))
                         .addGroup(jPanel3Layout.createSequentialGroup()
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -307,13 +335,13 @@ public class p_Transaksi extends javax.swing.JPanel {
                     .addComponent(b_reset))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton7)
-                        .addGap(48, 48, 48))))
+                        .addGap(48, 48, 48))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(11, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -329,7 +357,7 @@ public class p_Transaksi extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(77, 77, 77)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 550, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -374,6 +402,17 @@ public class p_Transaksi extends javax.swing.JPanel {
 
     private void t_BayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_BayarActionPerformed
         // TODO add your handling code here:
+        t_Bayar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                try {
+                    int bayar = Integer.parseInt(t_Bayar.getText());
+                    int total = Integer.parseInt(t_TtlBelanja.getText());
+                    t_Kembalian.setText(String.valueOf(bayar - total));
+                } catch (NumberFormatException e) {
+                    t_Kembalian.setText("0");
+                }
+            }
+        });
     }//GEN-LAST:event_t_BayarActionPerformed
 
     private void t_KembalianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_KembalianActionPerformed
@@ -381,29 +420,27 @@ public class p_Transaksi extends javax.swing.JPanel {
     }//GEN-LAST:event_t_KembalianActionPerformed
 
     private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
- 
+        String namaProduk = t_NamaProduk.getText();
+        int jumlah = Integer.parseInt(t_JmlBeli.getText());
+        int harga = Integer.parseInt(t_HargaSatuan.getText());
+        int subTotal = jumlah * harga;
+        daftarBelanja.add(new String[]{namaProduk, String.valueOf(jumlah), String.valueOf(harga), String.valueOf(subTotal)});
+        modelTransaksi.addRow(new Object[]{modelTransaksi.getRowCount() + 1, namaProduk, jumlah, harga, subTotal});
+        hitungTotalBelanja();
+        resetInputProduk();
     }//GEN-LAST:event_b_tambahActionPerformed
 
     private void b_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ubahActionPerformed
-  
+
     }//GEN-LAST:event_b_ubahActionPerformed
 
     private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
-        String idTransk = t_IdTransk.getText();
-          String sql = "DELETE FROM guru WHERE id_transaksi=?";
-       
-         try {
-            Connection conn = koneksiDB.konek();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, idTransk);
-            ps.execute();
-            JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
-             System.out.println(sQLException);
+        int row = t_transaksi.getSelectedRow();
+        if (row >= 0) {
+            daftarBelanja.remove(row);
+            modelTransaksi.removeRow(row);
+            hitungTotalBelanja();
         }
-         load_tabel_transaksi();
-         reset();
     }//GEN-LAST:event_b_hapusActionPerformed
 
     private void b_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_resetActionPerformed
@@ -412,7 +449,80 @@ public class p_Transaksi extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
 
+        String idTransaksi = t_IdTransk.getText();
+        String namaPelanggan = t_NamaPelanggan.getText();
+        int totalBelanja = Integer.parseInt(t_TtlBelanja.getText());
+        int bayar = Integer.parseInt(t_Bayar.getText());
+        int kembalian = Integer.parseInt(t_Kembalian.getText());
+
+        try {
+            Connection conn = koneksiDB.konek();
+            conn.setAutoCommit(false);
+
+            PreparedStatement pstTrans = conn.prepareStatement(
+                    "INSERT INTO transaksi(id_transaksi, nama_pelanggan, total, bayar, kembalian, tanggal) VALUES (?, ?, ?, ?, ?, NOW())");
+            pstTrans.setString(1, idTransaksi);
+            pstTrans.setString(2, namaPelanggan);
+            pstTrans.setInt(3, totalBelanja);
+            pstTrans.setInt(4, bayar);
+            pstTrans.setInt(5, kembalian);
+            pstTrans.executeUpdate();
+
+            for (String[] item : daftarBelanja) {
+                String namaProduk = item[0];
+                int jumlah = Integer.parseInt(item[1]);
+                int subtotal = Integer.parseInt(item[3]);
+
+                PreparedStatement pstGetId = conn.prepareStatement("SELECT id_produk FROM produk WHERE nama_produk=?");
+                pstGetId.setString(1, namaProduk);
+                ResultSet rs = pstGetId.executeQuery();
+                String idProduk = "";
+                if (rs.next()) {
+                    idProduk = rs.getString("id_produk");
+                }
+
+                PreparedStatement pstDetail = conn.prepareStatement(
+                        "INSERT INTO detail_transaksi(id_transaksi, id_produk, jumlah_beli, subtotal) VALUES (?, ?, ?, ?)");
+                pstDetail.setString(1, idTransaksi);
+                pstDetail.setString(2, idProduk);
+                pstDetail.setInt(3, jumlah);
+                pstDetail.setInt(4, subtotal);
+                pstDetail.executeUpdate();
+
+                PreparedStatement pstUpdateStok = conn.prepareStatement(
+                        "UPDATE produk SET stok = stok - ? WHERE id_produk=?");
+                pstUpdateStok.setInt(1, jumlah);
+                pstUpdateStok.setString(2, idProduk);
+                pstUpdateStok.executeUpdate();
+            }
+
+            conn.commit();
+            JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan!");
+            reset();
+            modelTransaksi.setRowCount(0);
+            daftarBelanja.clear();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan transaksi: " + e.getMessage());
+            e.printStackTrace();
+        }
+
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void t_TtlHargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_TtlHargaActionPerformed
+        // TODO add your handling code here:
+        t_JmlBeli.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                try {
+                    int jumlah = Integer.parseInt(t_JmlBeli.getText());
+                    int harga = Integer.parseInt(t_HargaSatuan.getText());
+                    t_TtlHarga.setText(String.valueOf(jumlah * harga));
+                } catch (NumberFormatException e) {
+                    t_TtlHarga.setText("0");
+                }
+            }
+        });
+    }//GEN-LAST:event_t_TtlHargaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -438,4 +548,9 @@ public class p_Transaksi extends javax.swing.JPanel {
     private javax.swing.JTextField t_TtlHarga;
     private javax.swing.JTable t_transaksi;
     // End of variables declaration//GEN-END:variables
+
+    private DefaultTableModel DefaultTableModel(String[] string, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
