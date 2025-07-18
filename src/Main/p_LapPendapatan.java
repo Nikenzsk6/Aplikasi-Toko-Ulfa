@@ -4,6 +4,13 @@
  */
 package Main;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author HP
@@ -15,6 +22,11 @@ public class p_LapPendapatan extends javax.swing.JPanel {
      */
     public p_LapPendapatan() {
         initComponents();
+    }
+    void reset(){
+        tglAwal.setCalendar(null);
+        tglAkhir.setCalendar(null);
+        
     }
 
     /**

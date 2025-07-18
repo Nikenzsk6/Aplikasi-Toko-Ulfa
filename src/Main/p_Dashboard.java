@@ -4,6 +4,11 @@
  */
 package Main;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author HP
@@ -15,8 +20,36 @@ public class p_Dashboard extends javax.swing.JPanel {
      */
     public p_Dashboard() {
         initComponents();
+        isiJumlahData();
     }
-
+private void isiJumlahData(){
+         Connection conn = koneksiDB.konek();
+         
+         try {
+            String sqlProduk = "SELECT COUNT(*) AS jumlah FROM produk";
+            Statement stProduk = conn.createStatement();
+            ResultSet rsProduk = stProduk.executeQuery(sqlProduk);
+            if (rsProduk.next()) {
+                int jumlah = rsProduk.getInt("jumlah");
+                tJmlProduk.setText(String.valueOf(jumlah));
+                
+            }
+            String sqlKategori = "SELECT COUNT(*) AS jumlah FROM kategori";
+            Statement stKategori = conn.createStatement();
+            ResultSet rsKategori = stKategori.executeQuery(sqlKategori);
+            if (rsKategori.next()) {
+                int jumlah = rsKategori.getInt("jumlah");
+                tJmlKategori.setText(String.valueOf(jumlah));
+            }
+            String sqlTransaksi = "SELECT COUNT(*) AS jumlah FROM transaksi";
+            Statement stTransaksi = conn.createStatement();
+            ResultSet rsTransaksi = stTransaksi.executeQuery(sqlTransaksi);
+            if (rsTransaksi.next()) {
+                int jumlah = rsTransaksi.getInt("jumlah");
+                tJmlTransaksi.setText(String.valueOf(jumlah));
+            }
+        } catch (SQLException sQLException) {
+        }}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,11 +68,11 @@ public class p_Dashboard extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        tJmlTransaksi = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
+        tJmlKategori = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -103,8 +136,8 @@ public class p_Dashboard extends javax.swing.JPanel {
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
-        jLabel4.setText("4");
+        tJmlTransaksi.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
+        tJmlTransaksi.setText("4");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -112,14 +145,14 @@ public class p_Dashboard extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(126, 126, 126)
-                .addComponent(jLabel4)
+                .addComponent(tJmlTransaksi)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(76, 76, 76)
-                .addComponent(jLabel4)
+                .addComponent(tJmlTransaksi)
                 .addContainerGap(75, Short.MAX_VALUE))
         );
 
@@ -150,8 +183,8 @@ public class p_Dashboard extends javax.swing.JPanel {
 
         jPanel8.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
-        jLabel6.setText("5");
+        tJmlKategori.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
+        tJmlKategori.setText("5");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -159,14 +192,14 @@ public class p_Dashboard extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
+                .addComponent(tJmlKategori)
                 .addGap(121, 121, 121))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
-                .addComponent(jLabel6)
+                .addComponent(tJmlKategori)
                 .addContainerGap(74, Short.MAX_VALUE))
         );
 
@@ -254,9 +287,7 @@ public class p_Dashboard extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -265,6 +296,8 @@ public class p_Dashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel tJmlKategori;
     private javax.swing.JLabel tJmlProduk;
+    private javax.swing.JLabel tJmlTransaksi;
     // End of variables declaration//GEN-END:variables
 }

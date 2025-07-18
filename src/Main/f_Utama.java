@@ -353,6 +353,7 @@ public class f_Utama extends javax.swing.JFrame {
 
     private void bLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLogoutActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_bLogoutActionPerformed
 
     private void bSubMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSubMenu2ActionPerformed
