@@ -4,19 +4,93 @@
  */
 package Main;
 
+import Main.koneksiDB;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author HP
  */
 public class popUp_editPtoduk extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form popUp_editPtoduk
      */
     public popUp_editPtoduk() {
         initComponents();
     }
+    
+    void reset(){
+        t_idProduk.setText(null);
+        c_kategori.setSelectedItem(null);
+        t_namaProduk2.setText(null);
+        t_harga.setText(null);
+        t_stok.setText(null);
+        
+        //Aktifkan pengeditan pd textField kode Jurusan
+        t_idProduk.setEditable(true);
+    }
+    
+    public void tampildata(String id_produk, String kategori, String nama,  String harga,
+    String stok){
+     t_idProduk.setText(id_produk);
+     c_kategori.setSelectedItem(kategori);
+     t_namaProduk2.setText(nama);
+     t_harga.setText(harga);
+     t_stok.setText(stok);
+     
+      //Nonaktifkan pengeditan pd textField kode Jurusan
+        t_idProduk.setEditable(false);
+    }
 
+    public void ubahProduk(){
+        b_tambah.setVisible(false);
+    }
+    public void tambahProduk(){
+        b_ubah.setVisible(false);
+        b_hapus.setVisible(false);
+    }
+    void comboKategori(){
+        try {
+           String sql = "SELECT * FROM kategori";
+           Connection con = koneksiDB.konek();
+           Statement st = con.createStatement();
+           ResultSet rs = st.executeQuery(sql);
+
+           while (rs.next()) {
+               c_kategori.addItem(rs.getString("nama_kategori"));
+           }
+       } catch (SQLException e) {
+           //koosng, tidak ada penanganan
+       }
+       //kosongkan pilihan defaylt CBox
+       c_kategori.setSelectedItem(null);
+    }
+    
+    String idKategori(String namaKategori){
+       try{
+           String sql = "SELECT * FROM kategori WHERE nama_kategori=?";
+           Connection con = koneksiDB.konek();
+           Statement st = con.createStatement();
+           PreparedStatement ps = con.prepareStatement(sql);
+           ps.setString(1, namaKategori);
+           ResultSet rs = ps.executeQuery();
+
+           while (rs.next()) {
+               return rs.getString("id_kategori");
+           }
+       } catch (SQLException e) {
+           //jika error. kembali string kosong
+           return "";
+       } 
+       return "";
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,28 +115,33 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
         b_hapus = new javax.swing.JButton();
         b_batal = new javax.swing.JButton();
         b_reset1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        t_idProduk = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         p_dasar.setBackground(new java.awt.Color(102, 102, 255));
+        p_dasar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Nama Produk");
 
-        c_kategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         c_kategori.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nama Kategori");
 
+        t_harga.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         t_harga.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Harga");
 
+        t_stok.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         t_stok.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         t_stok.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +149,7 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
             }
         });
 
+        t_namaProduk2.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         t_namaProduk2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -80,34 +160,68 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
 
         b_ubah.setBackground(new java.awt.Color(255, 102, 0));
         b_ubah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_ubah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Edit2.png"))); // NOI18N
         b_ubah.setText("Ubah");
+        b_ubah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_ubahActionPerformed(evt);
+            }
+        });
 
         b_hapus.setBackground(new java.awt.Color(255, 51, 51));
         b_hapus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_hapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/delete.png"))); // NOI18N
         b_hapus.setText("Hapus");
+        b_hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_hapusActionPerformed(evt);
+            }
+        });
 
         b_batal.setBackground(new java.awt.Color(153, 153, 153));
         b_batal.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_batal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Cancel.png"))); // NOI18N
         b_batal.setText("Batal");
+        b_batal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_batalActionPerformed(evt);
+            }
+        });
 
         b_reset1.setBackground(new java.awt.Color(0, 153, 255));
         b_reset1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_reset1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/reset.png"))); // NOI18N
         b_reset1.setText("Reset");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("ID Produk");
+
+        t_idProduk.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        t_idProduk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout p_dasarLayout = new javax.swing.GroupLayout(p_dasar);
         p_dasar.setLayout(p_dasarLayout);
         p_dasarLayout.setHorizontalGroup(
             p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_dasarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(b_reset1)
+                .addGap(41, 41, 41)
+                .addComponent(b_batal)
+                .addGap(97, 97, 97))
             .addGroup(p_dasarLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
                     .addGroup(p_dasarLayout.createSequentialGroup()
                         .addComponent(b_ubah)
                         .addGap(18, 18, 18)
@@ -119,34 +233,33 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addComponent(jLabel2)
                         .addComponent(jLabel1)
-                        .addComponent(c_kategori, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(c_kategori, 0, 330, Short.MAX_VALUE)
                         .addComponent(t_harga)
-                        .addComponent(t_namaProduk2, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                        .addComponent(t_namaProduk2)
+                        .addComponent(jLabel4)
+                        .addComponent(t_idProduk)))
                 .addContainerGap(27, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, p_dasarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(b_reset1)
-                .addGap(41, 41, 41)
-                .addComponent(b_batal)
-                .addGap(97, 97, 97))
         );
         p_dasarLayout.setVerticalGroup(
             p_dasarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(p_dasarLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(21, 21, 21)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(t_idProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(c_kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(t_namaProduk2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(t_harga, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(t_stok, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -166,19 +279,121 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(p_dasar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(p_dasar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(p_dasar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(p_dasar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        pack();
+        setSize(new java.awt.Dimension(400, 566));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void t_stokActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_stokActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_t_stokActionPerformed
+
+    private void b_batalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_batalActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_b_batalActionPerformed
+
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+          //ambil input dari textField kode dan nama jurusan
+        String id_produk = t_idProduk.getText();
+        String kategori = idKategori(c_kategori.getSelectedItem().toString());
+        String nama_produk = t_namaProduk2.getText();
+        String harga = t_harga.getText();
+        String stok = t_stok.getText();
+        
+        //Query SQL
+        try {
+            String sql = "INSERT INTO produk(id_produk, nama_produk, id_kategori, harga, stok)"
+                    + "SET (?,?,?,?,?)";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_produk);
+            ps.setString(2, kategori);
+            ps.setString(3, nama_produk);
+            ps.setString(4, harga);
+            ps.setString(5, stok);
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_tambahActionPerformed
+
+    private void b_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_ubahActionPerformed
+         //ambil input dari textField kode dan nama jurusan
+        String id_produk = t_idProduk.getText();
+        String kategori = idKategori(c_kategori.getSelectedItem().toString());
+        String nama_produk = t_namaProduk2.getText();
+        String harga = t_harga.getText();
+        String stok = t_stok.getText();
+        
+        //Query SQL
+        try {
+            String sql = "UPDATE produk SET id_produk=?, kategori=?, nama_produk=?, stok=?, harga=?"
+                    +"WHERE id_produk=?";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_produk);
+            ps.setString(2, kategori);
+            ps.setString(3, nama_produk);
+            ps.setString(4, harga);
+            ps.setString(5, stok);
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal diubah!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_ubahActionPerformed
+
+    private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
+        //ambil input dari textField kode dan nama jurusan
+        String id_produk = t_idProduk.getText();
+        String kategori = idKategori(c_kategori.getSelectedItem().toString());
+        String nama_produk = t_namaProduk2.getText();
+        String harga = t_harga.getText();
+        String stok = t_stok.getText();
+        
+        //Query SQL
+        try {
+            String sql = "DELETE FROM produk WHERE id_produk=?";
+            Connection con = koneksiDB.konek();//buat koneksi ke DB
+            //siapkan query SQL utk dieksekusi
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, id_produk);
+           
+            //jalankan query
+            ps.execute();
+
+            //tampilkan pesan bahwa data berhasil disimpan
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
+        } catch (SQLException sQLException) {
+            //tampilkan pesan error jika gagal menyimpan
+            JOptionPane.showMessageDialog(null, "Data gagal dihapus!");
+            System.out.println(sQLException);
+        } 
+        reset();
+    }//GEN-LAST:event_b_hapusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,9 +441,11 @@ public class popUp_editPtoduk extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPanel p_dasar;
     private javax.swing.JTextField t_harga;
+    private javax.swing.JTextField t_idProduk;
     private javax.swing.JTextField t_namaProduk2;
     private javax.swing.JTextField t_stok;
     // End of variables declaration//GEN-END:variables

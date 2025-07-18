@@ -24,13 +24,15 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
     }
     
     public void tampildata(String id, String nama,  String alamat,
-    String noHP, String role, String pw){
+    String noHP, String role){
      t_idUser.setText(id);
      t_namaUser.setText(nama);
      t_alamat.setText(alamat);
      t_noHP.setText(noHP);
      c_role.setSelectedItem(role);
-     t_pw.setText(pw);
+     
+      //Nonaktifkan pengeditan pd textField id USer
+        t_idUser.setEditable(false);
     }
     
     public void ubahUser(){
@@ -316,8 +318,8 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
         
         //Query SQL
         try {
-            String sql = "INSERT INTO kategori(id_user, nama_user, alamat,no_hp, password, role)"
-                    +"VALUES ";
+            String sql = "INSERT INTO user(id_user, nama_user, alamat,no_hp, password, role)"
+                    +"VALUES (?,?,?,?,md5(?),?)";
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
@@ -325,8 +327,8 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
             ps.setString(2, nama_user);
             ps.setString(3, alamat);
             ps.setString(4, noHP);
-            ps.setString(5, role);
-            ps.setString(6, pw);
+            ps.setString(5, pw);
+            ps.setString(6, role);
             //jalankan query
             ps.execute();
 
@@ -334,7 +336,7 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
         } catch (SQLException sQLException) {
             //tampilkan pesan error jika gagal menyimpan
-            JOptionPane.showMessageDialog(null, "Data gagal disimpan!");
+            JOptionPane.showMessageDialog(null, "Data gagal disimpan");
             System.out.println(sQLException);
         } 
         reset();
@@ -351,17 +353,17 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
         
         //Query SQL
         try {
-            String sql = "UPDATE user SET id_use=?, nama_use=?, alamat=?, no_hp=?, pw=?, role=?"
+            String sql = "UPDATE user SET nama_user=?, alamat=?, no_hp=?, password=md5(?), role=?"
                     +"WHERE id_user=?";
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, id_user);
-            ps.setString(2, nama_user);
-            ps.setString(3, alamat);
-            ps.setString(4, noHP);
+            ps.setString(1,nama_user );
+            ps.setString(2,alamat );
+            ps.setString(3,noHP );
+            ps.setString(4,pw );
             ps.setString(5, role);
-            ps.setString(6, pw);
+            ps.setString(6, id_user);
             //jalankan query
             ps.execute();
 
@@ -369,7 +371,7 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Data berhasil diubah");
         } catch (SQLException sQLException) {
             //tampilkan pesan error jika gagal menyimpan
-            JOptionPane.showMessageDialog(null, "Data gagal diubah!");
+            JOptionPane.showMessageDialog(null, sQLException);
             System.out.println(sQLException);
         } 
         reset();
@@ -394,8 +396,8 @@ public class p_editDataKaryawan extends javax.swing.JPanel {
             ps.setString(2, nama_user);
             ps.setString(3, alamat);
             ps.setString(4, noHP);
-            ps.setString(5, role);
-            ps.setString(6, pw);
+            ps.setString(5, pw);
+            ps.setString(6, role);
             //jalankan query
             ps.execute();
 

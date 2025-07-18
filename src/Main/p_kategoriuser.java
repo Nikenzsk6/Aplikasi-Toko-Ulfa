@@ -219,15 +219,13 @@ public class p_kategoriuser extends javax.swing.JPanel {
             String noHP = table_dataKaryawan.getValueAt(barisdipilih, 4).toString();
             String role = table_dataKaryawan.getValueAt(barisdipilih, 5).toString();
             
-            //ambil pw dari lis data karena tidak ditampilkan di tabel
-            String pw = dataUser.get(barisdipilih)[5];
             
             p_editDataKaryawan panelEdit = new p_editDataKaryawan();
-            panelEdit.tampildata(id, nama, alamat, noHP, role, pw);
+            panelEdit.tampildata(id, nama, alamat, noHP, role);
             panelEdit.ubahUser();// tombol ubah tampil, tombol simpan disembunyikan
 
-            // tampilkan ke p_dasar
-            panelEdit.setSize(p_dasar.getSize());
+            //tampilkan ke p_dasar
+           panelEdit.setSize(p_dasar.getSize());
             panelEdit.setVisible(true);
 
             p_dasar.removeAll();
@@ -235,6 +233,7 @@ public class p_kategoriuser extends javax.swing.JPanel {
             p_dasar.add(panelEdit, BorderLayout.CENTER);
             p_dasar.revalidate();
             p_dasar.repaint();
+            
         }
     }//GEN-LAST:event_table_dataKaryawanMouseClicked
 

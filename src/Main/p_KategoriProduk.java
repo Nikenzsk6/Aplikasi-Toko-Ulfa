@@ -41,7 +41,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
        model.addColumn("No.");
        model.addColumn("ID Kategori");
        model.addColumn("Nama Kategori");
-       
+       int no = 1;
        //Query SL utk mengambil semua data dari tabel
        String sql = "SELECT * FROM kategori";
        
@@ -55,7 +55,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
                String id_kategori = rs.getString("id_kategori");
                String nama_kategori = rs.getString("nama_kategori");
                //membuat array berisi data satu baris
-               Object[] baris = {id_kategori, nama_kategori, };
+               Object[] baris = {no++, id_kategori, nama_kategori, };
                //menambahkan array ke dlm tabel
                model.addRow(baris);
            }
@@ -267,7 +267,7 @@ public class p_KategoriProduk extends javax.swing.JPanel {
         
         //Query SQL
         try {
-            String sql = "INSERT INTO jurusan(kode_jur, nama_jurusan) VALUES(?,?)";
+            String sql = "INSERT INTO kategori(id_kategori, nama_kategori) VALUES(?,?)";
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
@@ -298,8 +298,8 @@ public class p_KategoriProduk extends javax.swing.JPanel {
             Connection con = koneksiDB.konek();//buat koneksi ke DB
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, id_kategori);
-            ps.setString(2, nama_kategori);
+            ps.setString(1, nama_kategori);
+            ps.setString(2, id_kategori);
             //jalankan query
             ps.execute();
 
@@ -317,7 +317,6 @@ public class p_KategoriProduk extends javax.swing.JPanel {
     private void b_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_hapusActionPerformed
        
         String id_kategori = t_idKategori.getText();
-        String nama_kategori = t_namaKategori1.getText();
         
         //Query SQL
         try {
@@ -326,7 +325,6 @@ public class p_KategoriProduk extends javax.swing.JPanel {
             //siapkan query SQL utk dieksekusi
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, id_kategori);
-            ps.setString(2, nama_kategori);
             //jalankan query
             ps.execute();
 
@@ -350,13 +348,13 @@ public class p_KategoriProduk extends javax.swing.JPanel {
         int barisDipilih = table_katProduk.rowAtPoint(evt.getPoint());
         
         //ambil nilai kolom kode dan nama jurusan
-        String id_kategori =table_katProduk.getValueAt(barisDipilih, 0).toString();
-        String nama_kategori = table_katProduk.getValueAt(barisDipilih, 1).toString();
+        String id_kategori =table_katProduk.getValueAt(barisDipilih, 1).toString();
+        String nama_kategori = table_katProduk.getValueAt(barisDipilih, 2).toString();
         
         //tampilkan kode dan nama jurusaan ke textField 
         t_idKategori.setText(id_kategori);
         t_namaKategori1.setText(nama_kategori);
-        //Nonaktifkan pengeditan pd textField 
+        //Nonaktifkan pengeditan pd textField id kategori
         t_idKategori.setEditable(false);
     }//GEN-LAST:event_table_katProdukMouseClicked
 

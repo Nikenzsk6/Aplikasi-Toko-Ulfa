@@ -4,19 +4,87 @@
  */
 package Main;
 
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author sitin
  */
 public class p_stokProduk extends javax.swing.JPanel {
-
+     ArrayList<String[]> dataProduk = new ArrayList<>();
     /**
      * Creates new form p_stokProduk
      */
     public p_stokProduk() {
         initComponents();
+        load_table_produk();
+        reset();
     }
 
+    void reset(){
+        t_cariProduk.setText(null);
+    }
+     void load_table_produk(){
+         DefaultTableModel model = new DefaultTableModel();
+       
+       //menambahkan kolom ke dlm tabel
+      model.addColumn("No");
+       model.addColumn("ID produk");
+       model.addColumn("Nama produk"); 
+       model.addColumn("Kategori"); 
+       model.addColumn("Stok"); 
+       model.addColumn("Harga");
+       
+       dataProduk.clear();//mengosongkan list agar tidak duplikat
+       int no = 1; 
+       //Query SL utk mengambil semua data dari tabel
+       String sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori, p.stok, p.harga "
+               +"FROM produk p, kategori k WHERE p.id_kategori=k.id_kategori";
+       
+       try {
+           Connection con = koneksiDB.konek();//membuka koneksi ke DB
+           //membut Statement utk menjalankan query SQL
+           Statement st = con.createStatement();
+           //menjalankan query
+           ResultSet rs = st.executeQuery(sql);
+          
+           //melakukan iterasi utk setiap baris data
+           while (rs.next()) {
+               
+               
+               //simpan data produk 
+               String [] data = {
+                   rs.getString("id_produk"),
+                   rs.getString("nama_produk"),
+                   rs.getString("nama_kategori"),
+                   rs.getString("stok"),
+                   rs.getString("harga")
+               };
+               dataProduk.add(data);
+               //membuat array berisi data satu baris
+               Object[] baris = {
+               no++,data[0], data[1], data[2], data[3], data[4]};
+               //menambahkan array ke dlm tabel
+               model.addRow(baris);
+           }
+       } catch (SQLException sQLException) {
+           //menampilkan pesan error
+           JOptionPane.showMessageDialog(null, sQLException);
+           System.out.println(sQLException);
+       }
+       table_dataproduk.setModel(model); 
+    }
+     
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,10 +99,12 @@ public class p_stokProduk extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         p_main = new javax.swing.JPanel();
         b_tambah = new javax.swing.JButton();
+        b_reset = new javax.swing.JButton();
         t_cariProduk = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_dataproduk = new javax.swing.JTable();
         b_cetak = new javax.swing.JButton();
+        b_cari = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -53,6 +123,21 @@ public class p_stokProduk extends javax.swing.JPanel {
         b_tambah.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         b_tambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Plus+.png"))); // NOI18N
         b_tambah.setText("Tambah");
+        b_tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_tambahActionPerformed(evt);
+            }
+        });
+
+        b_reset.setBackground(new java.awt.Color(0, 153, 255));
+        b_reset.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        b_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/reset.png"))); // NOI18N
+        b_reset.setText("Reset");
+        b_reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_resetActionPerformed(evt);
+            }
+        });
 
         t_cariProduk.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Cari Nama Produk", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
@@ -67,6 +152,11 @@ public class p_stokProduk extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
+        table_dataproduk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_dataprodukMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(table_dataproduk);
 
         b_cetak.setBackground(new java.awt.Color(153, 153, 153));
@@ -74,21 +164,32 @@ public class p_stokProduk extends javax.swing.JPanel {
         b_cetak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Print.png"))); // NOI18N
         b_cetak.setText("Cetak");
 
+        b_cari.setBackground(new java.awt.Color(153, 153, 153));
+        b_cari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
+        b_cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_cariActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout p_mainLayout = new javax.swing.GroupLayout(p_main);
         p_main.setLayout(p_mainLayout);
         p_mainLayout.setHorizontalGroup(
             p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(p_mainLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(p_mainLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(b_cetak))
+                .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(p_mainLayout.createSequentialGroup()
                         .addComponent(b_tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(b_cari)
+                        .addGap(47, 47, 47)
+                        .addComponent(b_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addGap(104, 104, 104)
+                .addComponent(b_cetak)
                 .addContainerGap(178, Short.MAX_VALUE))
         );
         p_mainLayout.setVerticalGroup(
@@ -96,13 +197,15 @@ public class p_stokProduk extends javax.swing.JPanel {
             .addGroup(p_mainLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(b_cetak)
                     .addGroup(p_mainLayout.createSequentialGroup()
                         .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(b_tambah)
-                            .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(b_reset)
+                            .addComponent(b_cari))
+                        .addGap(39, 39, 39)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(b_cetak))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -139,9 +242,70 @@ public class p_stokProduk extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
+        
+        popUp_editPtoduk pd = new popUp_editPtoduk();
+        pd.tambahProduk();
+        pd.setVisible(true);
+        
+    }//GEN-LAST:event_b_tambahActionPerformed
+
+    private void b_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_resetActionPerformed
+        reset();
+    }//GEN-LAST:event_b_resetActionPerformed
+
+    private void table_dataprodukMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_dataprodukMouseClicked
+        int barisdipilih = table_dataproduk.rowAtPoint(evt.getPoint());
+        
+        if (barisdipilih >= 0) {
+            String id_produk = table_dataproduk.getValueAt(barisdipilih, 1).toString();
+            String kategori = table_dataproduk.getValueAt(barisdipilih, 2).toString();
+            String nama = table_dataproduk.getValueAt(barisdipilih, 3).toString();
+            String harga = table_dataproduk.getValueAt(barisdipilih, 4).toString();
+            String stok = table_dataproduk.getValueAt(barisdipilih, 5).toString();
+            
+            
+           popUp_editPtoduk panelEdit = new popUp_editPtoduk();
+            panelEdit.tampildata(id_produk, kategori, nama, harga, stok);
+            panelEdit.ubahProduk();// tombol ubah tampil, tombol simpan disembunyikan
+
+            panelEdit.setVisible(true);
+        }
+       
+    }//GEN-LAST:event_table_dataprodukMouseClicked
+
+    private void b_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariActionPerformed
+       String kataKunci = t_cariProduk.getText().trim();
+       
+       String sql;
+       Connection con = koneksiDB.konek();
+       PreparedStatement ps = null;
+       ResultSet rs = null;
+       
+        try {
+            if (kataKunci.isEmpty()) {
+                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk ORDER BY id_produk ASC";
+                ps = con.prepareStatement(sql);
+            } else {
+                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk"
+                        + "WHERE nama_produk LIKE ? ORDER BY id_produk ASC";
+                ps = con.prepareStatement(sql);
+                ps.setString(1, "%" + kataKunci + "%");
+            }
+            
+            rs = ps.executeQuery();
+            JOptionPane.showMessageDialog(null, "Data ditemukan");
+        } catch (SQLException sQLException) {
+            JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
+        }
+       
+    }//GEN-LAST:event_b_cariActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_cari;
     private javax.swing.JButton b_cetak;
+    private javax.swing.JButton b_reset;
     private javax.swing.JButton b_tambah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
