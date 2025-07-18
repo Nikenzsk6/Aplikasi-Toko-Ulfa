@@ -28,19 +28,20 @@ public class p_stokProduk extends javax.swing.JPanel {
         initComponents();
         load_table_produk();
         reset();
+       
     }
 
     void reset(){
         t_cariProduk.setText(null);
     }
-     void load_table_produk(){
+    public void load_table_produk(){
          DefaultTableModel model = new DefaultTableModel();
        
        //menambahkan kolom ke dlm tabel
       model.addColumn("No");
        model.addColumn("ID produk");
-       model.addColumn("Nama produk"); 
-       model.addColumn("Kategori"); 
+       model.addColumn("Nama Produk"); 
+       model.addColumn("Kategori "); 
        model.addColumn("Stok"); 
        model.addColumn("Harga");
        
@@ -48,7 +49,7 @@ public class p_stokProduk extends javax.swing.JPanel {
        int no = 1; 
        //Query SL utk mengambil semua data dari tabel
        String sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori, p.stok, p.harga "
-               +"FROM produk p, kategori k WHERE p.id_kategori=k.id_kategori";
+               +"FROM produk p JOIN kategori k ON p.id_kategori=k.id_kategori";
        
        try {
            Connection con = koneksiDB.konek();//membuka koneksi ke DB
@@ -244,7 +245,7 @@ public class p_stokProduk extends javax.swing.JPanel {
 
     private void b_tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_tambahActionPerformed
         
-        popUp_editPtoduk pd = new popUp_editPtoduk();
+        popUp_editProduk pd = new popUp_editProduk(this);
         pd.tambahProduk();
         pd.setVisible(true);
         
@@ -259,14 +260,15 @@ public class p_stokProduk extends javax.swing.JPanel {
         
         if (barisdipilih >= 0) {
             String id_produk = table_dataproduk.getValueAt(barisdipilih, 1).toString();
-            String kategori = table_dataproduk.getValueAt(barisdipilih, 2).toString();
-            String nama = table_dataproduk.getValueAt(barisdipilih, 3).toString();
-            String harga = table_dataproduk.getValueAt(barisdipilih, 4).toString();
-            String stok = table_dataproduk.getValueAt(barisdipilih, 5).toString();
+            String nama = table_dataproduk.getValueAt(barisdipilih, 2).toString();
+            String kategori = table_dataproduk.getValueAt(barisdipilih, 3).toString();
+            String stok = table_dataproduk.getValueAt(barisdipilih, 4).toString();
+            String harga = table_dataproduk.getValueAt(barisdipilih, 5).toString();
             
             
-           popUp_editPtoduk panelEdit = new popUp_editPtoduk();
-            panelEdit.tampildata(id_produk, kategori, nama, harga, stok);
+            
+           popUp_editProduk panelEdit = new popUp_editProduk(this);
+            panelEdit.tampildata(id_produk, nama, kategori, stok, harga);
             panelEdit.ubahProduk();// tombol ubah tampil, tombol simpan disembunyikan
 
             panelEdit.setVisible(true);
@@ -284,11 +286,14 @@ public class p_stokProduk extends javax.swing.JPanel {
        
         try {
             if (kataKunci.isEmpty()) {
-                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk ORDER BY id_produk ASC";
+                sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
+                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
+                + "ORDER BY p.id_produk";
                 ps = con.prepareStatement(sql);
             } else {
-                sql = "SELECT id_produk, nama_produk, kategori, stok, harga FROM produk"
-                        + "WHERE nama_produk LIKE ? ORDER BY id_produk ASC";
+                sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
+                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
+                + "WHERE p.nama_produk LIKE ? ORDER BY p.id_produk";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, "%" + kataKunci + "%");
             }
@@ -297,6 +302,7 @@ public class p_stokProduk extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Data ditemukan");
         } catch (SQLException sQLException) {
             JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
+            System.out.println(sQLException);
         }
        
     }//GEN-LAST:event_b_cariActionPerformed
