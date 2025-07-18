@@ -6,6 +6,7 @@ package Main;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -353,7 +354,19 @@ public class f_Utama extends javax.swing.JFrame {
 
     private void bLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLogoutActionPerformed
         // TODO add your handling code here:
-        
+        int pilihan =  JOptionPane.showConfirmDialog(null, 
+            "Apakah Anda yakin ingin keluar?",
+            "Konfirmasi",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (pilihan == JOptionPane.YES_OPTION) {
+            System.out.println("Keluar dari aplikasi...");
+            System.exit(0);
+        } else {
+            System.out.println("Aksi dibatalkan.");
+        } 
     }//GEN-LAST:event_bLogoutActionPerformed
 
     private void bSubMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSubMenu2ActionPerformed
