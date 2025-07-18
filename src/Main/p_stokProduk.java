@@ -34,6 +34,56 @@ public class p_stokProduk extends javax.swing.JPanel {
     void reset(){
         t_cariProduk.setText(null);
     }
+    
+    public void load_table_model(String kataKunci) {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("No");
+    model.addColumn("ID Produk");
+    model.addColumn("Nama Produk");
+    model.addColumn("Kategori");
+    model.addColumn("Stok");
+    model.addColumn("Harga");
+
+    String sql;
+    Connection con = koneksiDB.konek();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        if (kataKunci.isEmpty()) {
+            sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
+                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
+                + "ORDER BY p.id_produk";
+            ps = con.prepareStatement(sql);
+        } else {
+            sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
+                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
+                + "WHERE p.nama_produk LIKE ? ORDER BY p.id_produk";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + kataKunci + "%");
+        }
+
+        rs = ps.executeQuery();
+        int no = 1;
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                no++,
+                rs.getString("id_produk"),
+                rs.getString("nama_produk"),
+                rs.getString("kategori"),
+                rs.getInt("stok"),
+                rs.getInt("harga")
+            });
+        }
+
+        table_dataproduk.setModel(model);
+
+    } catch (SQLException sQLException) {
+        JOptionPane.showMessageDialog(null, "Data tidak ditemukan: " + sQLException.getMessage());
+    }
+}
+
+    
     public void load_table_produk(){
          DefaultTableModel model = new DefaultTableModel();
        
@@ -199,11 +249,12 @@ public class p_stokProduk extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(p_mainLayout.createSequentialGroup()
-                        .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(b_tambah)
-                            .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(b_reset)
-                            .addComponent(b_cari))
+                        .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(b_cari, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(b_tambah)
+                                .addComponent(t_cariProduk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(b_reset)))
                         .addGap(39, 39, 39)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(b_cetak))
@@ -278,32 +329,9 @@ public class p_stokProduk extends javax.swing.JPanel {
 
     private void b_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariActionPerformed
        String kataKunci = t_cariProduk.getText().trim();
+        load_table_model(kataKunci);
        
-       String sql;
-       Connection con = koneksiDB.konek();
-       PreparedStatement ps = null;
-       ResultSet rs = null;
        
-        try {
-            if (kataKunci.isEmpty()) {
-                sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
-                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
-                + "ORDER BY p.id_produk";
-                ps = con.prepareStatement(sql);
-            } else {
-                sql = "SELECT p.id_produk, p.nama_produk, k.nama_kategori AS kategori, p.stok, p.harga "
-                + "FROM produk p JOIN kategori k ON p.id_kategori = k.id_kategori "
-                + "WHERE p.nama_produk LIKE ? ORDER BY p.id_produk";
-                ps = con.prepareStatement(sql);
-                ps.setString(1, "%" + kataKunci + "%");
-            }
-            
-            rs = ps.executeQuery();
-            JOptionPane.showMessageDialog(null, "Data ditemukan");
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, "Data tidak ditemukan");
-            System.out.println(sQLException);
-        }
        
     }//GEN-LAST:event_b_cariActionPerformed
 

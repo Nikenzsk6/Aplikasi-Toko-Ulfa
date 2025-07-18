@@ -6,6 +6,7 @@ package Main;
 
 import java.awt.BorderLayout;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,8 +24,54 @@ public class p_kategoriuser extends javax.swing.JPanel {
     public p_kategoriuser() {
         initComponents();
         load_table_user();
+
     }
     
+    public void load_table_model(String kataKunci) {
+    DefaultTableModel model = new DefaultTableModel();
+    model.addColumn("No");
+    model.addColumn("ID User");
+    model.addColumn("Nama User");
+    model.addColumn("Alamat");
+    model.addColumn("NO. HP");
+    model.addColumn("Role");
+
+    String sql;
+    Connection con = koneksiDB.konek();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        if (kataKunci.isEmpty()) {
+            sql = "SELECT * FROM user";
+            ps = con.prepareStatement(sql);
+        } else {
+            sql = "SELECT id_user, nama_user, alamat, no_hp, role FROM user "
+                + "WHERE nama_user LIKE ? ORDER BY id_user";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + kataKunci + "%");
+        }
+
+        rs = ps.executeQuery();
+        int no = 1;
+        while (rs.next()) {
+            model.addRow(new Object[]{
+                no++,
+                rs.getString("id_user"),
+                rs.getString("nama_user"),
+                rs.getString("alamat"),
+                rs.getString("no_hp"),
+                rs.getString("role")
+            });
+        }
+
+        table_dataKaryawan.setModel(model);
+
+    } catch (SQLException sQLException) {
+        JOptionPane.showMessageDialog(null, "Data tidak ditemukan: ");
+        System.out.println(sQLException);
+    }
+}
     void load_table_user(){
          DefaultTableModel model = new DefaultTableModel();
        
@@ -93,6 +140,7 @@ public class p_kategoriuser extends javax.swing.JPanel {
         t_cariKaryawan = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_dataKaryawan = new javax.swing.JTable();
+        b_cari = new javax.swing.JButton();
 
         p_dasar.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -132,6 +180,14 @@ public class p_kategoriuser extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(table_dataKaryawan);
 
+        b_cari.setBackground(new java.awt.Color(153, 153, 153));
+        b_cari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/Search.png"))); // NOI18N
+        b_cari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_cariActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout p_mainLayout = new javax.swing.GroupLayout(p_main);
         p_main.setLayout(p_mainLayout);
         p_mainLayout.setHorizontalGroup(
@@ -139,12 +195,14 @@ public class p_kategoriuser extends javax.swing.JPanel {
             .addGroup(p_mainLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(p_mainLayout.createSequentialGroup()
                         .addComponent(b_tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(71, 71, 71)
-                        .addComponent(t_cariKaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(325, Short.MAX_VALUE))
+                        .addComponent(t_cariKaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(b_cari)))
+                .addContainerGap(354, Short.MAX_VALUE))
         );
         p_mainLayout.setVerticalGroup(
             p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,9 +210,10 @@ public class p_kategoriuser extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addGroup(p_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(b_tambah)
-                    .addComponent(t_cariKaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_cariKaryawan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(b_cari))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -237,8 +296,15 @@ public class p_kategoriuser extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_table_dataKaryawanMouseClicked
 
+    private void b_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_cariActionPerformed
+        String kataKunci = t_cariKaryawan.getText().trim();
+        load_table_model(kataKunci);
+
+    }//GEN-LAST:event_b_cariActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_cari;
     private javax.swing.JButton b_tambah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
